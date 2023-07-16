@@ -2,6 +2,8 @@ import { Button, StyleSheet } from 'react-native';
 
 import EditScreenInfo from '../../components/EditScreenInfo';
 import { Text, View } from '../../components/Themed';
+import { DuffleRequest } from 'duffle';
+import { service } from '../../service';
 
 export default function TabOneScreen() {
   return (
@@ -9,9 +11,20 @@ export default function TabOneScreen() {
       <Text style={styles.title}>Tab One</Text>
       <Button
         title="Test"
-        onPress={() => {
-          
-          console.log('Test');
+        onPress={async () => {
+          console.log('Attempting to store a user...');
+          const body = new Map<string, any>();
+          body.set('firstName', 'Johnathan');
+          body.set('lastName', 'doe');
+
+          const request: DuffleRequest = {
+            method: 'POST',
+            url: '/api/userinfo',
+            body: body,
+          };
+
+          const res = await service.resolve(request);
+          console.log('Test: ' + res.body);
         }}
       />
       <View

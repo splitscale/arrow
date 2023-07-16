@@ -41,8 +41,8 @@ export default interface BaseRepository {
    */
   update<T>(
     collection: string,
-    filters: Map<string, any>,
-    document: RepositoryDocumentRequestOf<T>
+    document: RepositoryDocumentRequestOf<T>,
+    filters?: Map<string, any>
   ): Promise<boolean>;
 
   /**
@@ -57,8 +57,8 @@ export default interface BaseRepository {
 
   getFirst<T>(
     collection: string,
-    filters: Map<string, any>
-  ): Promise<RepositoryDocumentResponseOf<T> | null>;
+    filters?: Map<string, any>
+  ): Promise<RepositoryDocumentResponseOf<T>>;
 
   deleteOne(collection: string, filters?: Map<string, any>): Promise<void>;
 
