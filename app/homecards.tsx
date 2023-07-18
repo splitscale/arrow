@@ -14,10 +14,10 @@ export default function Homecards({location, aptName, aptDetails, profilePic, ap
             uri: profilePic
           }}
           resizeMode='contain'
-          className='w-12 h-12 rounded-xl ml-1'
+          className='w-12 h-12 rounded-full'
         />
         
-        <View className='ml-1 bg-transparent flex-1 justify-center align-center'>
+        <View className='ml-2 bg-transparent flex-1 justify-center align-center'>
           <Text className='ml-1 text-lg font-bold' numberOfLines={1}>
             {aptName}
           </Text>
@@ -29,7 +29,7 @@ export default function Homecards({location, aptName, aptDetails, profilePic, ap
               resizeMode='contain'
               className='w-5 h-auto'
             />
-            <Text className='text-sm text-neutral-700/90 dark:text-neutral-200/90' numberOfLines={1}>
+            <Text className='text-xs text-neutral-700/90 dark:text-neutral-200/90' numberOfLines={1}>
               {location}
             </Text>
           </View>
