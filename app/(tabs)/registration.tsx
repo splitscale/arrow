@@ -97,7 +97,7 @@ export default function Registration() {
         name="password"
         rules={{
           required: 'Password is required',
-          minLength: {value: 6, message: 'Password must be at least 6 characters'}
+          minLength: {value: 8, message: 'Password must be at least 8 characters'}
         }}
         render={({field: {value, onBlur, onChange}, fieldState: {error}}) => (
           <>
@@ -122,7 +122,7 @@ export default function Registration() {
         control={control}
         name="password-repeat"
         rules={{
-          required: 'Re-enter your password',
+          required: 'Confirm your password',
           validate: value =>
             value === passwordValidation || 'Passwords do not match'
         }}
@@ -131,7 +131,7 @@ export default function Registration() {
           <TextInput
             style= {[{borderColor: error ? 'red' : 'gray'}]}
             className='w-2/3 h-10 rounded-xl border bg-slate-50 border-radius-20 mb-2 px-5 mt-2'
-            placeholder='Re-enter Password'
+            placeholder='Confirm Password'
             placeholderTextColor='black'
             secureTextEntry={true}
             value={value}
