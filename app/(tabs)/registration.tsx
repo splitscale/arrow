@@ -1,54 +1,167 @@
 import React from 'react';
 import { View, Text } from '../../components/Themed';
 import { TextInput, Pressable } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
+import { useForm, Controller } from 'react-hook-form';
 
 export default function Registration() {
+  const { control, handleSubmit, watch } = useForm();
+  const emailRegex = /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/
+  const passwordValidation = watch('password')
+
+  const router = useRouter();
+
+  const registerPress = (data: any) => {
+    router.push('/home')
+    console.log(data)
+  }
+
   return (
     <>
-    <View className="flex-1 self-stretch justify-center bg-white dark:bg-black">
-      <Text className='ml-7 mb-5 text-3xl'>
+    <View className="flex-1 self-stretch items-center justify-center bg-white dark:bg-black">
+      <Text className=' text-5xl'>
         Sign Up
       </Text>
-      <View className='items-center'>
-        <TextInput
-          className='pl-2 rounded-lg bg-slate-300 w-10/12 m-3 border border-black dark:border-white h-10 justify-center'
-          placeholder='First Name'
-          placeholderTextColor='black'
-        /> 
 
-        <TextInput
-          className='pl-2 rounded-lg bg-slate-300 w-10/12 m-3 border border-black dark:border-white h-10 justify-center'
-          placeholder='Last Name'
-          placeholderTextColor='black'
-        /> 
+      <Controller
+        control={control}
+        name="firstName"
+        rules={{required: 'Please enter your First Name'}}
+        render={({field: {value, onBlur, onChange}, fieldState: {error}}) => (
+          <>
+          <TextInput
+            style= {[{borderColor: error ? 'red' : 'gray'}]}
+            className= 'w-2/3 h-10 rounded-xl border bg-slate-50 border-radius-20 mb-2 px-5 mt-9'
+            placeholder='First Name'
+            placeholderTextColor='black'
+            value={value}
+            onChangeText={onChange}
+            onBlur={onBlur}
+          />
+          { error && (
+            <Text className='w-7/12 text-red-600'>{error.message || 'Error'}</Text>
+          )}
+          </>
+        )}
+      />
 
-        <TextInput
-          className='pl-2 rounded-lg bg-slate-300 w-10/12 m-3 border border-black dark:border-white h-10 justify-center'
-          placeholder='Email'
-          placeholderTextColor='black'
-        /> 
+      <Controller
+        control={control}
+        name="lastName"
+        rules={{required: 'Please enter your Last Name'}}
+        render={({field: {value, onBlur, onChange}, fieldState: {error}}) => (
+          <>
+          <TextInput
+            style= {[{borderColor: error ? 'red' : 'gray'}]}
+            className='w-2/3 h-10 rounded-xl border bg-slate-50 border-radius-20 mb-2 px-5 mt-2'
+            placeholder='Last Name'
+            placeholderTextColor='black'
+            value={value}
+            onChangeText={onChange}
+            onBlur={onBlur}
+          /> 
+          { error && (
+            <Text className='w-7/12 text-red-600'>{error.message || 'Error'}</Text>
+          )}
+          </>
+        )}
+      />
 
-        <TextInput
-          className='pl-2 rounded-lg bg-slate-300 w-10/12 m-3 border border-black dark:border-white h-10 justify-center'
-          placeholder='Password'
-          placeholderTextColor='black'
-          secureTextEntry={true}
-        /> 
+      <Controller
+        control={control}
+        name="email"
+        rules={{
+          required: 'Email address required',
+          pattern: {value: emailRegex, message: 'Enter a valid email address'}
+        }}
+        render={({field: {value, onBlur, onChange}, fieldState: {error}}) => (
+          <>
+          <TextInput
+            style= {[{borderColor: error ? 'red' : 'gray'}]}
+            className='w-2/3 h-10 rounded-xl border bg-slate-50 border-radius-20 mb-2 px-5 mt-2'
+            placeholder='Email'
+            placeholderTextColor='black'
+            value={value}
+            onChangeText={onChange}
+            onBlur={onBlur}
+          /> 
+          { error && (
+            <Text className='w-7/12 text-red-600'>{error.message || 'Error'}</Text>
+          )}
+          </>
+        )}
+      />
 
-        <TextInput
-          className='pl-2 rounded-lg bg-slate-300 w-10/12 m-3 border border-black dark:border-white h-10 justify-center'
-          placeholder='Re-enter Password'
-          placeholderTextColor='black'
-          secureTextEntry={true}
-        /> 
+      <Controller
+        control={control}
+        name="password"
+        rules={{
+          required: 'Password is required',
+          minLength: {value: 8, message: 'Password must be at least 8 characters'}
+        }}
+        render={({field: {value, onBlur, onChange}, fieldState: {error}}) => (
+          <>
+          <TextInput
+            style= {[{borderColor: error ? 'red' : 'gray'}]}
+            className='w-2/3 h-10 rounded-xl border bg-slate-50 border-radius-20 mb-2 px-5 mt-2'
+            placeholder='Password'
+            placeholderTextColor='black'
+            secureTextEntry={true}
+            value={value}
+            onChangeText={onChange}
+            onBlur={onBlur}
+          /> 
+          { error && (
+            <Text className='w-7/12 text-red-600'>{error.message || 'Error'}</Text>
+          )}          
+          </>
+        )}
+      />
 
-        <Link href={'/homescreen'} asChild>
-          <Pressable className='mt-7 w-4/12 h-9 items-center justify-center bg-green-800 rounded-lg'>
-            <Text className='text-white text-base'>Sign Up</Text>
-          </Pressable>
-        </Link>
+      <Controller
+        control={control}
+        name="password-repeat"
+        rules={{
+          required: 'Confirm your password',
+          validate: value =>
+            value === passwordValidation || 'Passwords do not match'
+        }}
+        render={({field: {value, onBlur, onChange}, fieldState: {error}}) => (
+          <>
+          <TextInput
+            style= {[{borderColor: error ? 'red' : 'gray'}]}
+            className='w-2/3 h-10 rounded-xl border bg-slate-50 border-radius-20 mb-2 px-5 mt-2'
+            placeholder='Confirm Password'
+            placeholderTextColor='black'
+            secureTextEntry={true}
+            value={value}
+            onChangeText={onChange}
+            onBlur={onBlur}
+          />
+          { error && (
+            <Text className='w-7/12 text-red-600'>{error.message || 'Error'}</Text>
+          )}          
+          </>
+        )}
+      />
+
+      <Pressable
+        className='w-1/3 bg-green-800 font-bold rounded-md py-2 px-4 mb-5 mt-8'
+        onPress={handleSubmit(registerPress)}
+      >
+        <Text className='text-white text-center'>Sign Up</Text>
+      </Pressable>
+
+      
+      <View className="flex-row items-center mb-2">
+        <Text className=" mt-5">Already have an account?</Text>
       </View>
+      
+      <Link href={'/login'} asChild>
+        <Pressable className="ml-2">
+          <Text className="text-green-700">Login here</Text>
+        </Pressable>
+      </Link>
     </View>
     </>
   )
