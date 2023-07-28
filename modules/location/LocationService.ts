@@ -22,6 +22,8 @@ export class LocationService {
   public findLocationsNearby(center: Coordinate, radius: number): Location[] {
     const result: Location[] = this.locations.filter((location) => {
       return this.isWithinRadius(center, location.coordinates, radius)
+    }).map((location) => {
+      return { id: location.id, coordinates: location.coordinates, distance: this.calculateDistance(center, location.coordinates)}
     })
     console.log('Found locations within ' + radius + 'km')
     return result
