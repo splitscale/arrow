@@ -1,11 +1,10 @@
-import { Locations } from "./Locations";
 import { Coordinate } from "./type/Coordinate";
 import { Location } from "./type/Location"
 import { LocationWithDistance } from "./type/LocationWithDistance";
 
 export class LocationService {
   private locations: Location[]
-  constructor() {
+  constructor(Locations: Location[]) {
     this.locations = Locations
   }
 
