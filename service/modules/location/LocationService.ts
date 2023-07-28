@@ -1,31 +1,30 @@
-import { Listings } from "./Listings";
-import { Coordinate, Location } from "./LocationTypes"
+import { Locations } from "./Locations";
+import { Coordinate } from "./type/Coordinate";
+import { Location } from "./type/Location"
+import { LocationWithDistance } from "./type/LocationWithDistance";
 
 export class LocationService {
   private locations: Location[]
   constructor() {
-    this.locations = Listings
+    this.locations = Locations
   }
 
     // text search
   public searchListings(key: string): Location[] {
     const result = this.locations.filter(e => e.id.toLowerCase().includes(key))
     if (result.length === 0) {
-        console.log("Provided listing is not found")
         return []
     } else {
-      console.log("Provided listing found")
       return result
     }
   }
   // gps search. change "center" to either the user or pin coordinate
-  public findLocationsNearby(center: Coordinate, radius: number): Location[] {
-    const result: Location[] = this.locations.filter((location) => {
+  public findLocationsNearby(center: Coordinate, radius: number): LocationWithDistance[] {
+    const result: LocationWithDistance[] = this.locations.filter((location) => {
       return this.isWithinRadius(center, location.coordinates, radius)
     }).map((location) => {
       return { id: location.id, coordinates: location.coordinates, distance: this.calculateDistance(center, location.coordinates)}
     })
-    console.log('Found locations within ' + radius + 'km')
     return result
   }
 
