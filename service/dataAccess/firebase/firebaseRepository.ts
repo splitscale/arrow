@@ -15,8 +15,8 @@ import {
   updateDoc,
   writeBatch,
 } from 'firebase/firestore';
-import { Logger } from '../../utils/logger';
 import { uuid } from '../uuid';
+import { logger } from '../../utils/logger';
 
 export class FirebaseRepository implements BaseRepository {
   private db: Firestore;
@@ -33,11 +33,11 @@ export class FirebaseRepository implements BaseRepository {
 
     try {
       await setDoc(doc(this.db, collection, id), document);
-      Logger.info('inserted a document in: ' + collection);
+      logger.info('inserted a document in: ' + collection);
 
       return true;
     } catch (error) {
-      Logger.error(error as string);
+      logger.error(error as string);
       return false;
     }
   }
@@ -50,14 +50,14 @@ export class FirebaseRepository implements BaseRepository {
     const id = document.id;
     const docData = document.data as Object;
 
-    Logger.info('inserting: ' + id);
+    logger.info('inserting: ' + id);
 
     try {
       await setDoc(doc(this.db, collection, id), docData);
-      Logger.info(`inserted {${id}} in: ` + collection);
+      logger.info(`inserted {${id}} in: ` + collection);
       return id;
     } catch (error) {
-      Logger.error(error as string);
+      logger.error(error as string);
       return Promise.reject(error);
     }
   }
@@ -73,7 +73,7 @@ export class FirebaseRepository implements BaseRepository {
     if (docSnap.exists()) {
       return docSnap.data() as T;
     } else {
-      Logger.error(`Document {${id}} Does not exist`);
+      logger.error(`Document {${id}} Does not exist`);
       return null;
     }
   }
@@ -101,10 +101,10 @@ export class FirebaseRepository implements BaseRepository {
       const documentRef = doc(this.db, collection, id);
       updateDoc(documentRef, data);
 
-      Logger.info(`Document {${id}} updated successfully`);
+      logger.info(`Document {${id}} updated successfully`);
       return true;
     } catch (error) {
-      Logger.error(`Error updating document {${id}} with an error: `);
+      logger.error(`Error updating document {${id}} with an error: `);
       return false;
     }
   }
@@ -131,7 +131,7 @@ export class FirebaseRepository implements BaseRepository {
 
       return res;
     } catch (error) {
-      Logger.error(error as string);
+      logger.error(error as string);
       return Promise.reject(error);
     }
   }
@@ -151,7 +151,7 @@ export class FirebaseRepository implements BaseRepository {
 
       return results[0];
     } catch (error) {
-      Logger.error(error as string);
+      logger.error(error as string);
       return Promise.reject(error);
     }
   }
@@ -165,9 +165,9 @@ export class FirebaseRepository implements BaseRepository {
 
     try {
       await deleteDoc(doc(this.db, collection, id));
-      Logger.info(`Document {${id}} deleted in: ${collection}`);
+      logger.info(`Document {${id}} deleted in: ${collection}`);
     } catch (error) {
-      Logger.error(error as string);
+      logger.error(error as string);
       Promise.reject(
         `Error deleting document: {${id}} in {${collection}} collection`
       );
@@ -184,7 +184,7 @@ export class FirebaseRepository implements BaseRepository {
       );
 
       if (querySnapshot.empty) {
-        Logger.error('deleteAll failed');
+        logger.error('deleteAll failed');
         return Promise.reject(`Collection {${collection}} is empty`);
       }
 
@@ -195,10 +195,10 @@ export class FirebaseRepository implements BaseRepository {
       });
 
       await batch.commit();
-      Logger.info('deleted all documents in: ' + collection);
+      logger.info('deleted all documents in: ' + collection);
       return;
     } catch (error) {
-      Logger.error(error as string);
+      logger.error(error as string);
       return Promise.reject(
         `Error when deleting documents in {${collection}} collection: ${error}`
       );

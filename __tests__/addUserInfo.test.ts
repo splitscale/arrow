@@ -17,8 +17,6 @@ it('should be able to add a new userInfo to the database', async () => {
     body: body,
   };
 
-  console.log(firebaseConfig);
-
   try {
     const res = await service.resolve(request);
     console.log(res);
