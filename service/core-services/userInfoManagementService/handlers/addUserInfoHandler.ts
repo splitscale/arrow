@@ -14,13 +14,21 @@ export class AddUserInfoHandler extends BaseHandler {
   }
 
   public async handle(request: DuffleRequest): Promise<DuffleResponse> {
-    const firstName = request.body?.get('firstName');
-    const lastName = request.body?.get('lastName');
+    const body = request.body as Map<string, any> | undefined;
+
+    const firstName = body?.get('firstName');
+    const lastName = body?.get('lastName');
+    const docId = body?.get('id');
+    const metadata = body?.get('metadata');
 
     try {
       const id = await this.interactor.add({
-        firstName: firstName,
-        lastName: lastName,
+        id: docId,
+        data: {
+          firstName: firstName,
+          lastName: lastName,
+        },
+        metadata: metadata,
       });
 
       const res: DuffleResponse = {
@@ -28,7 +36,7 @@ export class AddUserInfoHandler extends BaseHandler {
         body: id,
       };
 
-      return res;
+      return Promise.resolve(res);
     } catch (error) {
       const res: DuffleResponse = {
         status: 'ERROR',

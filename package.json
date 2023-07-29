@@ -6,7 +6,10 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "test": "jest --watchAll"
+    "test": "jest --watch --coverage=false --changedSince=origin/main",
+    "testDebug": "jest -o --watch --coverage=false",
+    "testFinal": "jest",
+    "updateSnapshots": "jest -u --coverage=false"
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
@@ -42,12 +45,13 @@
     "jest-expo": "~48.0.0",
     "react-test-renderer": "18.2.0",
     "tailwindcss": "^3.3.2",
+    "ts-jest": "^29.1.1",
     "typescript": "^4.9.4"
   },
   "private": true,
   "jest": {
     "preset": "jest-expo",
-    "testEnvironment": "jsdom",
+    "testEnvironment": "node",
     "setupFiles": [
       "./jest.setup.js"
     ],

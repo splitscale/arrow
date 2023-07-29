@@ -29,8 +29,10 @@ export class FirebaseRepository implements BaseRepository {
     collection: string,
     document: RepositoryDocumentRequestOf<T>
   ): Promise<boolean> {
+    const id = uuid();
+
     try {
-      await setDoc(doc(this.db, collection), document);
+      await setDoc(doc(this.db, collection, id), document);
       Logger.info('inserted a document in: ' + collection);
 
       return true;
@@ -44,13 +46,15 @@ export class FirebaseRepository implements BaseRepository {
     collection: string,
     document: RepositoryDocumentRequestOf<T>
   ): Promise<string | null> {
-    const id = uuid();
+    if (!document.id) throw new Error('Id is required');
+    const id = document.id;
+    const docData = document.data as Object;
+
+    Logger.info('inserting: ' + id);
 
     try {
-      await setDoc(doc(this.db, collection, id), document);
-
+      await setDoc(doc(this.db, collection, id), docData);
       Logger.info(`inserted {${id}} in: ` + collection);
-
       return id;
     } catch (error) {
       Logger.error(error as string);

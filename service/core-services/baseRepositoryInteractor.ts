@@ -1,4 +1,5 @@
 import BaseRepository from '../repository/baseRepository';
+import { RepositoryDocumentRequestOf } from '../repository/repositoryTypes';
 
 export class BaseRepositoryInteractor<T> {
   protected readonly db: BaseRepository;
@@ -9,15 +10,15 @@ export class BaseRepositoryInteractor<T> {
     this.collectionPath = '';
   }
 
-  async add(data: T): Promise<string | null> {
-    return await this.db.insertWithId<T>(this.collectionPath, { data });
+  async add(data: RepositoryDocumentRequestOf<T>): Promise<string | null> {
+    return await this.db.insertWithId<T>(this.collectionPath, data);
   }
 
   async update(docId: string, data: T) {
     const filters = new Map<string, any>();
     filters.set('id', docId);
 
-    return this.db.update(this.collectionPath, filters, { data: data });
+    return this.db.update(this.collectionPath, { data: data }, filters);
   }
 
   async delete(docId: string) {
