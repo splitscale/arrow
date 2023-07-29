@@ -1,27 +1,31 @@
-export class Logger {
-  private static isDev: boolean;
+import { NODE_ENV } from '../../env.secret';
+
+class Logger {
+  private isDev: boolean;
 
   constructor() {
-    Logger.isDev = process.env.NODE_ENV === 'development';
+    this.isDev = NODE_ENV === 'development';
   }
 
-  static info(msg: any): void {
+  info(msg: any): void {
     if (!this.isDev) return;
     console.info(msg);
   }
 
-  static error(msg: any): void {
+  error(msg: any): void {
     if (!this.isDev) return;
     console.error(msg);
   }
 
-  static warn(msg: any): void {
+  warn(msg: any): void {
     if (!this.isDev) return;
     console.warn(msg);
   }
 
-  static debug(msg: any): void {
+  debug(msg: any): void {
     if (!this.isDev) return;
     console.debug(msg);
   }
 }
+
+export const logger = new Logger();
