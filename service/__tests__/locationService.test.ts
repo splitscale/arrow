@@ -1,6 +1,6 @@
-import { Location } from '../service/modules/location/type/Location'
-import { LocationService } from "../service/modules/location/LocationService"
-import { LocationWithDistance } from '../service/modules/location/type/LocationWithDistance'
+import { Location } from '../modules/location/type/Location'
+import { LocationService } from "../modules/location/LocationService"
+import { LocationWithDistance } from '../modules/location/type/LocationWithDistance'
 
 const Locations: Location[] = 
 [

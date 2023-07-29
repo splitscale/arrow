@@ -1,5 +1,5 @@
-import { LocationWithDistance } from "../service/modules/location/type/LocationWithDistance";
-import { LocationSort } from "../service/modules/sort/LocationSort";
+import { LocationWithDistance } from "../modules/location/type/LocationWithDistance";
+import { LocationSort } from "../modules/sort/LocationSort";
 
 const Locations: LocationWithDistance[] = 
 [

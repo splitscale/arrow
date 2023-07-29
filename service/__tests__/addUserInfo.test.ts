@@ -1,15 +1,13 @@
 import { DuffleRequest } from 'duffle';
-import { service } from '../service';
-import { firebaseConfig } from '../env.secret';
-import { deleteApp, getApps } from 'firebase/app';
-import FirebaseConfigurer from '../service/dataAccess/firebase/firebaseConfigurer';
-import { uuid } from '../service/dataAccess/uuid';
+import { service } from '..';
+import { deleteApp } from 'firebase/app';
+import FirebaseConfigurer from '../dataAccess/firebase/firebaseConfigurer';
 
 it('should be able to add a new userInfo to the database', async () => {
   const body = new Map<string, any>();
   body.set('firstName', 'john');
   body.set('lastName', 'wick');
-  body.set('id', uuid());
+  body.set('id', 'test-id');
 
   const request: DuffleRequest = {
     method: 'POST',
