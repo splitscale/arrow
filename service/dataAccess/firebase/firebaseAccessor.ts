@@ -2,6 +2,7 @@ import { FirebaseApp } from 'firebase/app';
 import { Firestore, getFirestore } from 'firebase/firestore';
 import { FirebaseStorage, getStorage } from 'firebase/storage';
 import FirebaseConfigurer from './firebaseConfigurer';
+import { getAuth } from 'firebase/auth';
 
 export default class FirebaseAccessor {
   private static getApp(): FirebaseApp {
@@ -14,5 +15,9 @@ export default class FirebaseAccessor {
 
   public static getStorage(): FirebaseStorage {
     return getStorage(this.getApp());
+  }
+
+  public static getAuth() {
+    return getAuth(this.getApp());
   }
 }
