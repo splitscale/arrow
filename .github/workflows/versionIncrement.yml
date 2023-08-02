@@ -22,4 +22,4 @@ jobs:
           # Optional. Commit message for the created commit.
           # Defaults to "Apply automatic changes"
           commit_message: "Automated Change [skip actions]"
-      - run: git push origin --follow-tags
+      - run: git push origin --follow-tags --force
