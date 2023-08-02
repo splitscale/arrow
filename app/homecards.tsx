@@ -14,7 +14,7 @@ export default function Homecards({location, aptName, aptDetails, profilePic, ap
             uri: profilePic
           }}
           resizeMode='contain'
-          className='w-12 h-12 rounded-full'
+          className='w-20 h-20 rounded-full'
         />
         
         <View className='ml-2 bg-transparent flex-1 justify-center align-center'>
