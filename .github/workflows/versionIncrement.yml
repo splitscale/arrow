@@ -18,9 +18,9 @@ jobs:
         run: >
           git config --global url.https://${{ secrets.SPLITSCALE_BOT_PAT }}@github.com/.insteadOf ssh://git@github.com/
           
-      - run: git config --global user.name "$BOT_USERNAME"
-      - run: git config --global user.email "$BOT_EMAIL"
-      - run: echo "$BOT_USERNAME $BOT_EMAIL"
+      - run: git config --global user.name "${{vars.BOT_USERNAME}}"
+      - run: git config --global user.email "${{vars.BOT_EMAIL}}"
+      - run: echo "${{vars.BOT_USERNAME}} ${{vars.BOT_EMAIL}}"
       - run: npm version minor -m "v%s"
       - run: VERSION=$(node -p "require('./package.json').version")
       - run: git tag ${VERSION} -m "Automated Change [skip actions]"
