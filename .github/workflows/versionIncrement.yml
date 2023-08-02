@@ -12,7 +12,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.SPLITSCALE_BOT_PAT }}
+          persist-credentials: false
+
+      - name: Reconfigure git to use HTTP authentication
+        run: >
+          git config --global url.https://${{ secrets.SPLITSCALE_BOT_PAT }}@github.com/.insteadOf ssh://git@github.com/
           
       - run: git config --global user.name "${{vars.BOT_USERNAME}}"
       - run: git config --global user.email "${{vars.BOT_EMAIL}}"
