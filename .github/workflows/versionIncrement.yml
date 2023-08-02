@@ -9,12 +9,17 @@ jobs:
   version:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
-          token: ${{ secrets.SPLITSCALE_BOT_PAT }}
+          persist-credentials: false
+
+      - name: Reconfigure git to use HTTP authentication
+        run: >
+          git config --global url.https://${{ secrets.SPLITSCALE_BOT_PAT }}@github.com/.insteadOf ssh://git@github.com/
           
-      - run: git config --global user.email $BOT_EMAIL
-      - run: git config --global user.name $BOT_USERNAME
+      - run: git config --global user.email "$BOT_EMAIL"
+      - run: git config --global user.name "$BOT_USERNAME"
       - run: npm version minor -m "v%s"
       - run: VERSION=$(node -p "require('./package.json').version")
       - run: git tag ${VERSION} -m "Automated Change [skip actions]"
