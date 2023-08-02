@@ -20,5 +20,5 @@ jobs:
       - run: npm version minor -m "v%s"
       - run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
       
-      - run: git tag ${VERSION} -m "Automated Change [skip actions]"
+      - run: git tag ${{ env.VERSION }} -m "Automated Change [skip actions]"
       - run: git push origin --follow-tags
