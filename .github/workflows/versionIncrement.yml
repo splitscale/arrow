@@ -12,16 +12,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          persist-credentials: false
-
-      - name: Reconfigure git to use HTTP authentication
-        run: >
-          git config --global url.https://${{ secrets.SPLITSCALE_BOT_PAT }}@github.com/.insteadOf ssh://git@github.com/
+          token: ${{ secrets.SPLITSCALE_BOT_PAT }}
           
       - run: git config --global user.name "${{vars.BOT_USERNAME}}"
       - run: git config --global user.email "${{vars.BOT_EMAIL}}"
-      - run: echo "${{vars.BOT_USERNAME}} ${{vars.BOT_EMAIL}}"
+      
       - run: npm version minor -m "v%s"
-      - run: VERSION=$(node -p "require('./package.json').version")
+      - run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+      
       - run: git tag ${VERSION} -m "Automated Change [skip actions]"
       - run: git push origin --follow-tags
