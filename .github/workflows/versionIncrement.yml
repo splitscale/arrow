@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SPLITSCALE_BOT_PAT: ${{ secrets.SPLITSCALE_BOT_PAT }}
+      BOT_PWD: ${{ secrets.BOT_PWD }}
       
     steps:
       - name: Checkout
@@ -19,7 +20,7 @@ jobs:
         
       - name: Reconfigure git to use HTTP authentication
         run: >
-          git config --global URL.https://github.com/.insteadOf ssh://git@github.com/
+          git config --global URL.https://${{ vars.BOT_USERNAME }}:${{ env.BOT_PWD }}@github.com/.insteadOf ssh://git@github.com/
           
       - run: git config --global user.name "${{ vars.BOT_USERNAME }}"
       - run: git config --global user.email "${{ vars.BOT_EMAIL }}"
