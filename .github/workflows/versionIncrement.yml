@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          token: ${{ github.token }}
+          token: ${{ secrets.PUSH_TO_PROTECTED_BRANCH }}
       - run: git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
       - run: git config user.name "$GITHUB_ACTOR"
       - run: npm version minor -m "v%s"
@@ -22,4 +22,4 @@ jobs:
           # Optional. Commit message for the created commit.
           # Defaults to "Apply automatic changes"
           commit_message: "Automated Change [skip actions]"
-      - run: git push origin --follow-tags --force
+      - run: git push origin --follow-tags
