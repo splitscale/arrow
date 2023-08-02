@@ -20,7 +20,7 @@ jobs:
         
       - name: Reconfigure git to use HTTP authentication
         run: >
-          git config --global URL.https://${{ vars.BOT_USERNAME }}:${{ env.BOT_PWD }}@github.com/.insteadOf ssh://git@github.com/
+          git config --global URL."https://${{ vars.BOT_USERNAME }}:${{ env.SPLITSCALE_BOT_PAT }}@github.com/splitscale/".insteadOf "ssh://git@github.com/splitscale/"
           
       - run: git config --global user.name "${{ vars.BOT_USERNAME }}"
       - run: git config --global user.email "${{ vars.BOT_EMAIL }}"
