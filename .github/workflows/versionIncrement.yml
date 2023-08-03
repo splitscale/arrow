@@ -10,12 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SPLITSCALE_BOT_PAT: ${{ secrets.SPLITSCALE_BOT_PAT }}
+      BOT_SSH: ${{ secrets.BOT_SSH }}
   
     steps:
       - name: Checkout local repository
         uses: actions/checkout@v3
         with:
           token: ${{ env.SPLITSCALE_BOT_PAT }}
+          ssh-key: ${{ env.BOT_SSH }}
     
       - name: Update version
         run: |
