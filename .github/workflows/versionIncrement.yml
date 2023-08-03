@@ -17,7 +17,6 @@ jobs:
 
       - name: Update version
         run: ./update_version.sh minor
-        working-directory: .ci/
 
       - name: Create version tag
         run: |
