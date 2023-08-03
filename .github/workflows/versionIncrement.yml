@@ -25,6 +25,10 @@ jobs:
           git config --global user.name "${{ vars.BOT_USERNAME }}"
           git config --global user.email "${{ vars.BOT_EMAIL }}"
 
+      - name: Set Remote URL
+        run: |
+          git remote set-url origin https://${{ env.SPLITSCALE_BOT_PAT }}@github.com/splitscale/arrow
+
       - name: Create version tag
         run: |
           VERSION=$(node -p "require('./package.json').version")
