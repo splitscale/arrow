@@ -2,11 +2,11 @@
 
 # Function to print usage
 print_usage() {
-  echo "Usage: $0 <major|minor|patch>"
+  echo "Usage: $0 <major|minor|patch> [path/to/package.json]"
 }
 
 # Check if argument is provided
-if [ $# -ne 1 ]; then
+if [ $# -lt 1 ]; then
   echo "Error: Missing argument."
   print_usage
   exit 1
@@ -19,14 +19,17 @@ if ! [[ "$1" =~ ^(major|minor|patch)$ ]]; then
   exit 1
 fi
 
+# Set the path to package.json
+package_json_path=${2:-"package.json"}
+
 # Check if package.json exists
-if [ ! -f "package.json" ]; then
-  echo "Error: package.json not found in the current directory."
+if [ ! -f "$package_json_path" ]; then
+  echo "Error: package.json not found at $package_json_path."
   exit 1
 fi
 
 # Extract current version from package.json
-current_version=$(grep -oE '"version": "([0-9]+\.[0-9]+\.[0-9]+)' package.json | cut -d'"' -f4)
+current_version=$(grep -oE '"version": "([0-9]+\.[0-9]+\.[0-9]+)' "$package_json_path" | cut -d'"' -f4)
 
 # Validate the version using regex (optional)
 if ! [[ "$current_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
@@ -48,6 +51,6 @@ case "$1" in
 esac
 
 # Replace the old version with the new version in package.json
-sed -i "s/\"version\": \"$current_version\"/\"version\": \"$new_version\"/" package.json
+sed -i "s/\"version\": \"$current_version\"/\"version\": \"$new_version\"/" "$package_json_path"
 
 echo "Updated package.json version from $current_version to $new_version"
