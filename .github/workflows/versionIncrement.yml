@@ -41,7 +41,7 @@ jobs:
       - name: Stage and Commit Changes
         run: |
           git add --all
-          git commit -m "[skip actions] Version automatically incremented to ${{ env.VERSION }}"
+          git commit -m "Version bumped to v${{ env.VERSION }} [skip actions]"
 
       - name: Push changes to protected branch
         run: |
