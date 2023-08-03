@@ -31,7 +31,10 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           git tag $VERSION -m "Automated Change [skip actions]"
 
-      - name: Pushing to the protected branch 'protected'
+      - name: Git Status
+        run: git status
+
+      - name: Pushing to the protected branch 'main'
         uses: CasperWA/push-protected@v2
         with:
           token: ${{ env.SPLITSCALE_BOT_PAT }}
