@@ -18,7 +18,12 @@ jobs:
       - name: Update version
         run: |
           chmod +x ./update_version.sh       
-          bash ./update_version.sh minor   
+          bash ./update_version.sh minor
+          
+      - name: Set Committer Identity
+        run: |
+          git config --global user.name "${{ vars.BOT_USERNAME }}"
+          git config --global user.email "${{ vars.BOT_EMAIL }}"
 
       - name: Create version tag
         run: |
