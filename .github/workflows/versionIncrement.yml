@@ -22,7 +22,7 @@ jobs:
       - name: Update version
         run: |
           chmod +x .ci/update_version.sh     
-          bash .ci/update_version.sh minor ../package.json
+          bash .ci/update_version.sh minor "$GITHUB_WORKSPACE/package.json"
           
       - name: Set Committer Identity
         run: |
