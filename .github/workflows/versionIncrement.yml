@@ -45,7 +45,8 @@ jobs:
 
       - name: Set Remote URL
         run: |
-          git remote set-url origin ${{ github.repository }}
+          git remote set-url origin ${{ github.repository }}.git
+          echo ${{ github.repository }}.git
 
       - name: Push changes to protected branch
         run: |
