@@ -21,8 +21,8 @@ jobs:
     
       - name: Update version
         run: |
-          chmod +x ../.././ci/update_version.sh     
-          bash ../../.ci/update_version.sh minor ../../package.json
+          chmod +x ./././ci/update_version.sh     
+          bash ././.ci/update_version.sh minor ././package.json
           
       - name: Set Committer Identity
         run: |
