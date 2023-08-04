@@ -1,17 +1,23 @@
 name: Version Increment
 
 on:
-  push:
+  pull_request:
     branches:
       - main
 
 jobs:
-  version:
+  version-increment:
     runs-on: ubuntu-latest
+    if: "contains(github.event.pull_request.title, '[break]') || contains(github.event.pull_request.title, '[feat]') || contains(github.event.pull_request.title, '[fix]')"
+
     env:
       SPLITSCALE_BOT_PAT: ${{ secrets.SPLITSCALE_BOT_PAT }}
       BOT_SSH: ${{ secrets.BOT_SSH }}
-  
+    
+    strategy:
+      matrix:
+        increment-type: [major, minor, patch]
+    
     steps:
       - name: Checkout local repository
         uses: actions/checkout@v3
@@ -19,30 +25,43 @@ jobs:
           token: ${{ env.SPLITSCALE_BOT_PAT }}
           ssh-key: ${{ env.BOT_SSH }}
     
+      - name: Determine version increment type
+        id: increment-type
+        if: "contains(github.event.pull_request.title, format('[{0}]', matrix.increment-type))"
+        run: echo "::set-output name=increment-type::${{ matrix.increment-type }}"
+    
       - name: Update version
+        if: steps.increment-type.outputs.increment-type
         run: |
           chmod +x .ci/update_version.sh     
-          bash .ci/update_version.sh minor "$GITHUB_WORKSPACE/package.json"
+          bash .ci/update_version.sh ${{ steps.increment-type.outputs.increment-type }} "$GITHUB_WORKSPACE/package.json"
           
       - name: Set Committer Identity
+        if: steps.increment-type.outputs.increment-type
         run: |
           git config --global user.name "${{ vars.BOT_USERNAME }}"
           git config --global user.email "${{ vars.BOT_EMAIL }}"
 
       - name: Create version tag
+        if: steps.increment-type.outputs.increment-type
         run: |
           VERSION=$(node -p "require('./package.json').version")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          git tag $VERSION
-
-      - name: Git Status
-        run: git status
+          git tag v${{ env.VERSION }}
 
       - name: Stage and Commit Changes
+        if: steps.increment-type.outputs.increment-type
         run: |
           git add --all
           git commit -m "Version bumped to v${{ env.VERSION }} [skip actions]"
 
-      - name: Push changes to protected branch
+      - name: Push changes to branch
+        if: steps.increment-type.outputs.increment-type
         run: |
-          git push origin ${{ github.event.repository.default_branch }} --tags --force
+          PROTECTED=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -X GET https://api.github.com/repos/${{ github.repository }}/branches/${{ github.head_ref }}/protection | jq '.url != null')
+          if [ "$PROTECTED" == "true" ]; then
+            FORCE="--force"
+          else
+            FORCE=""
+          fi
+          git push origin ${{ github.head_ref }} --tags $FORCE
