@@ -27,8 +27,8 @@ jobs:
     
       - name: Determine version increment type
         id: increment-type
-        if: "contains(github.event.pull_request.title, format('[{0}]', matrix.increment-type))"
-        run: echo "::set-output name=increment-type::${{ matrix.increment-type }}"
+        run: |
+          echo "::set-output name=increment-type::$(echo ${{ github.event.pull_request.title }} | sed -E 's/.*\[break\].*/major/;s/.*\[feat\].*/minor/;s/.*\[fix\].*/patch/')"
     
       - name: Update version
         if: steps.increment-type.outputs.increment-type
