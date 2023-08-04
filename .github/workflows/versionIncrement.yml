@@ -26,36 +26,36 @@ jobs:
           ssh-key: ${{ env.BOT_SSH }}
     
       - name: Determine version increment type
-        id: increment-type
         run: |
-          echo "::set-output name=increment-type::$(echo ${{ github.event.pull_request.title }} | sed -E 's/.*\[break\].*/major/;s/.*\[feat\].*/minor/;s/.*\[fix\].*/patch/')"
+          echo "INCREMENT_TYPE=$(echo ${{ github.event.pull_request.title }} | sed -E 's/.*\[break\].*/major/;s/.*\[feat\].*/minor/;s/.*\[fix\].*/patch/')" >> $GITHUB_ENV
     
       - name: Update version
-        if: steps.increment-type.outputs.increment-type
+        if: env.INCREMENT_TYPE
         run: |
           chmod +x .ci/update_version.sh     
-          bash .ci/update_version.sh ${{ steps.increment-type.outputs.increment-type }} -p "$GITHUB_WORKSPACE/package.json"
+          bash .ci/update_version.sh ${{ env.INCREMENT_TYPE }} -p "$GITHUB_WORKSPACE/package.json"
           
       - name: Set Committer Identity
-        if: steps.increment-type.outputs.increment-type
+        if: env.INCREMENT_TYPE
         run: |
           git config --global user.name "${{ vars.BOT_USERNAME }}"
           git config --global user.email "${{ vars.BOT_EMAIL }}"
 
       - name: Create version tag
-        if: steps.increment-type.outputs.increment-type
+        if: env.INCREMENT_TYPE
         run: |
           VERSION=$(node -p "require('./package.json').version")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           git tag v${{ env.VERSION }}
 
       - name: Stage and Commit Changes
-        if: steps.increment-type.outputs.increment-type
+        if: env.INCREMENT_TYPE
         run: |
           git add --all
           git commit -m "Version bumped to v${{ env.VERSION }} [skip actions]"
 
       - name: Push changes to branch
-        if: steps.increment-type.outputs.increment-type
+        if: env.INCREMENT_TYPE
         run: |
-          git push --tags --force
+          git push --set-upstream ${{ github.event.pull_request.head.repo.git_url }} ${{ github.event.pull_request.head.ref }} --tags
+
