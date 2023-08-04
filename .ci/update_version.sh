@@ -22,6 +22,7 @@ fi
 # Set default values for custom_version and package_json_path
 custom_version=""
 package_json_path="package.json"
+first_arg="$1"
 
 # Parse flags using a simple loop and case statement
 shift # Skip the first argument
@@ -58,18 +59,15 @@ if ! echo "$current_version" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
     exit 1
 fi
 
-# Increment the version based on the argument or set it to the custom version provided as an argument using the -v flag.
+# Increment the version based on the first argument or set it to the custom version provided as an argument using the -v flag.
 if [ -n "$custom_version" ]; then # If custom version is provided, use it.
     new_version=$custom_version
 else # Otherwise, increment the version based on the first argument using custom logic.
-    IFS='.' read -ra version_parts << EOF
-$current_version
-EOF
-    major="${version_parts[0]}"
-    minor="${version_parts[1]}"
-    patch="${version_parts[2]}"
+    major=$(echo $current_version | cut -d. -f1)
+    minor=$(echo $current_version | cut -d. -f2)
+    patch=$(echo $current_version | cut -d. -f3)
     
-    case "$1" in
+    case "$first_arg" in
         major)
             major=$((major + 1))
             minor=0

@@ -27,14 +27,14 @@ jobs:
     
       - name: Determine version increment type
         id: increment-type
-        if: "contains(github.event.pull_request.title, format('[{0}]', matrix.increment-type))"
-        run: echo "::set-output name=increment-type::${{ matrix.increment-type }}"
+        run: |
+          echo "::set-output name=increment-type::$(echo ${{ github.event.pull_request.title }} | sed -E 's/.*\[break\].*/major/;s/.*\[feat\].*/minor/;s/.*\[fix\].*/patch/')"
     
       - name: Update version
         if: steps.increment-type.outputs.increment-type
         run: |
           chmod +x .ci/update_version.sh     
-          bash .ci/update_version.sh ${{ steps.increment-type.outputs.increment-type }} "$GITHUB_WORKSPACE/package.json"
+          bash .ci/update_version.sh ${{ steps.increment-type.outputs.increment-type }} -p "$GITHUB_WORKSPACE/package.json"
           
       - name: Set Committer Identity
         if: steps.increment-type.outputs.increment-type
@@ -58,10 +58,4 @@ jobs:
       - name: Push changes to branch
         if: steps.increment-type.outputs.increment-type
         run: |
-          PROTECTED=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -X GET https://api.github.com/repos/${{ github.repository }}/branches/${{ github.head_ref }}/protection | jq '.url != null')
-          if [ "$PROTECTED" == "true" ]; then
-            FORCE="--force"
-          else
-            FORCE=""
-          fi
-          git push origin ${{ github.head_ref }} --tags $FORCE
+          git push --tags --force
