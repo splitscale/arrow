@@ -27,6 +27,8 @@ jobs:
           
       - name: Checkout to current branch
         run: |
+          git branch -a
+          git branch -r
           git checkout ${{ github.event.pull_request.head.ref }}
         
       - name: Determine version increment type
