@@ -58,4 +58,4 @@ jobs:
       - name: Push changes to branch
         if: steps.increment-type.outputs.increment-type
         run: |
-          git push origin ${{ github.head_ref }} --tags --force
+          git push --tags --force
