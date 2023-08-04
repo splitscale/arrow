@@ -34,7 +34,7 @@ jobs:
         if: steps.increment-type.outputs.increment-type
         run: |
           chmod +x .ci/update_version.sh     
-          bash .ci/update_version.sh ${{ steps.increment-type.outputs.increment-type }} "$GITHUB_WORKSPACE/package.json"
+          bash .ci/update_version.sh ${{ steps.increment-type.outputs.increment-type }} -p "$GITHUB_WORKSPACE/package.json"
           
       - name: Set Committer Identity
         if: steps.increment-type.outputs.increment-type
