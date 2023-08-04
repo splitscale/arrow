@@ -24,13 +24,8 @@ jobs:
         with:
           token: ${{ env.SPLITSCALE_BOT_PAT }}
           ssh-key: ${{ env.BOT_SSH }}
-          
-      - name: Checkout to current branch
-        run: |
-          git branch -a
-          git branch -r
-          git checkout ${{ github.event.pull_request.head.ref }}
-        
+          ref: ${{ github.event.pull_request.head.ref }}
+
       - name: Determine version increment type
         run: |
           echo "INCREMENT_TYPE=$(echo ${{ github.event.pull_request.title }} | sed -E 's/.*\[break\].*/major/;s/.*\[feat\].*/minor/;s/.*\[fix\].*/patch/')" >> $GITHUB_ENV
