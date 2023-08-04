@@ -15,6 +15,7 @@
     "@expo/vector-icons": "^13.0.0",
     "@projarrow/arrow-service": "^1.0.5",
     "@react-navigation/native": "^6.0.2",
+    "@reduxjs/toolkit": "^1.9.5",
     "@types/react-native-dotenv": "^0.2.0",
     "duffle": "^1.0.8",
     "expo": "~48.0.18",
