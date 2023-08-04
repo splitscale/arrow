@@ -1,8 +1,9 @@
 import { TouchableOpacity, Image } from 'react-native';
 import { Text, View } from '../components/Themed';
+import { TextInput, Pressable } from 'react-native';
 import EditButton from './EditButton';
 
-export default function ProfileCard({location,userName, profilePic,fullName,phoneNumber,email}: {email:string,phoneNumber:string,fullName:string,location: string, userName: string, profilePic: string}) {
+export default function EditCard({location,userName, profilePic,fullName,phoneNumber,email}: {email:string,phoneNumber:string,fullName:string,location: string, userName: string, profilePic: string}) {
   return (
     <View
       className='h-auto w-auto justify-center align-center flex-col mb-4 p-4  drop-shadow-md bg-neutral-100 shadow-lg shadow-black dark:shadow-white dark:bg-[#202020]'
@@ -22,16 +23,9 @@ export default function ProfileCard({location,userName, profilePic,fullName,phon
       </View>
     
 
-      <View className='py-4 px-2 ml-2 bg-transparent flex-row justify-center'>
+      {/* <View className='py-4 ml-2 bg-transparent flex-row justify-center'>
           <EditButton/>
-          <TouchableOpacity
-    className='h-8 w-28 justify-between align-center flex-col mb-4 py-1 px-7 rounded-xl drop-shadow-md bg-green-400 shadow-lg shadow-black dark:shadow-white dark:bg-[#12e22a]'
-    activeOpacity={0.5}>
-         <Text className='ml-1 text-sm font-bold'>
-            Logout
-          </Text>
-  </TouchableOpacity>
-        </View>
+        </View> */}
 
       <View className='ml-2 bg-transparent flex-1 justify-center'>
           <Text className='ml-1 text-lg font-bold' numberOfLines={1}>
@@ -39,9 +33,9 @@ export default function ProfileCard({location,userName, profilePic,fullName,phon
           </Text>
 
           <View className='px-1 bg-transparent flex-1'>
-            <Text className='text-lg text-neutral-700/90 dark:text-neutral-200/90' numberOfLines={1}>
+            <TextInput className="w-2/3 h-10 rounded-xl border border-gray-200 bg-slate-50 dark:border-white border-radius-20 mb-2 mt-10 px-5" numberOfLines={1}>
             {userName}
-            </Text>
+            </TextInput>
           </View>    
         </View>
         <View className='py-4 ml-2 bg-transparent flex-1 justify-center'>
