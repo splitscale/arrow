@@ -47,7 +47,7 @@ jobs:
         run: |
           VERSION=$(node -p "require('./package.json').version")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          git tag v${{ env.VERSION }}
+          git tag v$VERSION
 
       - name: Stage and Commit Changes
         if: env.INCREMENT_TYPE
@@ -58,5 +58,5 @@ jobs:
       - name: Push changes to branch
         if: env.INCREMENT_TYPE
         run: |
-          git push --tags
+          git push --follow-tags
 
