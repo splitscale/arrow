@@ -2,8 +2,7 @@ import { Button, StyleSheet } from 'react-native';
 
 import EditScreenInfo from '../../components/EditScreenInfo';
 import { Text, View } from '../../components/Themed';
-import { DuffleRequest } from 'duffle';
-import { service } from '../../service';
+import { getImageLibrary } from '../../ui-core/dataAccess/media/getImageLibrary';
 
 export default function TabOneScreen() {
   return (
@@ -12,19 +11,19 @@ export default function TabOneScreen() {
       <Button
         title="Test"
         onPress={async () => {
-          console.log('Attempting to store a user...');
-          const body = new Map<string, any>();
-          body.set('firstName', 'Johnathan');
-          body.set('lastName', 'doe');
+          const res = await getImageLibrary();
 
-          const request: DuffleRequest = {
-            method: 'POST',
-            url: '/api/userinfo',
-            body: body,
-          };
+          if (res.didCancel) {
+            console.log('Image selection cancelled');
+          }
 
-          const res = await service.resolve(request);
-          console.log('Test: ' + res.body);
+          if (res.errorCode) {
+            console.log('[ERROR] ' + `${res.errorCode}: ${res.errorMessage}`);
+          }
+
+          if (res.medias) {
+            res.medias.forEach(console.log);
+          }
         }}
       />
       <View
