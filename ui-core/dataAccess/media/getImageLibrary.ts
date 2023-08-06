@@ -1,5 +1,5 @@
-import { OptionsCommon, launchImageLibrary } from 'react-native-image-picker';
 import { PartialMedia } from './media';
+import * as ImagePicker from 'expo-image-picker';
 
 export type MediaPickerErrorCode =
   | 'camera_unavailable'
@@ -8,21 +8,19 @@ export type MediaPickerErrorCode =
 
 export interface MediaPickerResponse {
   didCancel?: boolean;
-  errorCode?: MediaPickerErrorCode;
-  errorMessage?: string;
   medias?: PartialMedia[];
 }
 
 export async function getImageLibrary() {
-  const options: OptionsCommon = {
-    mediaType: 'photo',
+  const options: ImagePicker.ImagePickerOptions = {
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
   };
 
-  const { didCancel, errorCode, errorMessage, assets } =
-    await launchImageLibrary(options);
-  const medias = assets?.map((asset) => {
+  const picker = await ImagePicker.launchImageLibraryAsync(options);
+
+  const medias = picker.assets?.map((asset) => {
     const media: PartialMedia = {
-      localId: asset.id,
+      localId: asset.assetId,
       base64: asset.base64,
       uri: asset.uri,
       width: asset.width,
@@ -36,9 +34,7 @@ export async function getImageLibrary() {
   });
 
   let res: MediaPickerResponse = {
-    didCancel: didCancel,
-    errorCode: errorCode,
-    errorMessage: errorMessage,
+    didCancel: picker.canceled,
     medias: medias,
   };
 

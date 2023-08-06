@@ -17,10 +17,6 @@ export default function TabOneScreen() {
             console.log('Image selection cancelled');
           }
 
-          if (res.errorCode) {
-            console.log('[ERROR] ' + `${res.errorCode}: ${res.errorMessage}`);
-          }
-
           if (res.medias) {
             res.medias.forEach(console.log);
           }
