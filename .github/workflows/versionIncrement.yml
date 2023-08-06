@@ -8,12 +8,12 @@ on:
 jobs:
   major-version-increment:
     runs-on: ubuntu-latest
-    if: "contains(github.event.pull_request.title, '[break]')"
+    if: contains(github.event.pull_request.title, '[break]')
 
     env:
       SPLITSCALE_BOT_PAT: ${{ secrets.SPLITSCALE_BOT_PAT }}
       BOT_SSH: ${{ secrets.BOT_SSH }}
-    
+
     steps:
       - name: Checkout local repository
         uses: actions/checkout@v3
@@ -26,7 +26,7 @@ jobs:
         run: |
           chmod +x .ci/update_version.sh     
           bash .ci/update_version.sh major -p "$GITHUB_WORKSPACE/package.json"
-          
+
       - name: Set Committer Identity
         run: |
           git config --global user.name "${{ vars.BOT_USERNAME }}"
@@ -49,12 +49,12 @@ jobs:
 
   minor-version-increment:
     runs-on: ubuntu-latest
-    if: "contains(github.event.pull_request.title, '[feat]')"
+    if: contains(github.event.pull_request.title, '[feat]')
 
     env:
       SPLITSCALE_BOT_PAT: ${{ secrets.SPLITSCALE_BOT_PAT }}
       BOT_SSH: ${{ secrets.BOT_SSH }}
-    
+
     steps:
       - name: Checkout local repository
         uses: actions/checkout@v3
@@ -67,7 +67,7 @@ jobs:
         run: |
           chmod +x .ci/update_version.sh     
           bash .ci/update_version.sh minor -p "$GITHUB_WORKSPACE/package.json"
-          
+
       - name: Set Committer Identity
         run: |
           git config --global user.name "${{ vars.BOT_USERNAME }}"
@@ -90,12 +90,12 @@ jobs:
 
   patch-version-increment:
     runs-on: ubuntu-latest
-    if: "contains(github.event.pull_request.title, '[fix]')"
+    if: contains(github.event.pull_request.title, '[fix]')
 
     env:
       SPLITSCALE_BOT_PAT: ${{ secrets.SPLITSCALE_BOT_PAT }}
       BOT_SSH: ${{ secrets.BOT_SSH }}
-    
+
     steps:
       - name: Checkout local repository
         uses: actions/checkout@v3
@@ -108,7 +108,7 @@ jobs:
         run: |
           chmod +x .ci/update_version.sh     
           bash .ci/update_version.sh patch -p "$GITHUB_WORKSPACE/package.json"
-          
+
       - name: Set Committer Identity
         run: |
           git config --global user.name "${{ vars.BOT_USERNAME }}"
@@ -128,4 +128,3 @@ jobs:
       - name: Push changes to branch
         run: |
           git push --follow-tags
-
