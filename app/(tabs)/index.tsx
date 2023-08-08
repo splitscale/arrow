@@ -4,22 +4,26 @@ import EditScreenInfo from '../../components/EditScreenInfo';
 import { Text, View } from '../../components/Themed';
 import { getImageLibrary } from '../../ui-core/dataAccess/media/getImageLibrary';
 
+import * as ImagePicker from 'expo-image-picker';
+
 export default function TabOneScreen() {
+  const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One</Text>
       <Button
         title="Test"
         onPress={async () => {
+          if (!status?.granted) await requestPermission();
+
           const res = await getImageLibrary();
 
           if (res.didCancel) {
             console.log('Image selection cancelled');
           }
 
-          if (res.medias) {
-            res.medias.forEach(console.log);
-          }
+          console.log('Medias: ', res.medias);
         }}
       />
       <View

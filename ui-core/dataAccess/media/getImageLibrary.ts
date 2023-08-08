@@ -14,6 +14,8 @@ export interface MediaPickerResponse {
 export async function getImageLibrary() {
   const options: ImagePicker.ImagePickerOptions = {
     mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsMultipleSelection: true,
+    orderedSelection: true,
   };
 
   const picker = await ImagePicker.launchImageLibraryAsync(options);
