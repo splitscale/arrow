@@ -91,3 +91,5 @@ fi
 sed -i "s/\"version\": \"$current_version\"/\"version\": \"$new_version\"/" "$package_json_path"
 
 echo "Updated version from $current_version to $new_version"
+
+# changes
