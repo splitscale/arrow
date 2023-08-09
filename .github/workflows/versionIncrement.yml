@@ -25,7 +25,7 @@ jobs:
       - name: Update version
         run: |
           chmod +x .ci/update_version.sh     
-          bash .ci/update_version.sh major -p "$GITHUB_WORKSPACE/package.json"
+          npm version major
           
       - name: Set Committer Identity
         run: |
@@ -66,7 +66,7 @@ jobs:
       - name: Update version
         run: |
           chmod +x .ci/update_version.sh     
-          bash .ci/update_version.sh minor -p "$GITHUB_WORKSPACE/package.json"
+          bash npm version minor
           
       - name: Set Committer Identity
         run: |
@@ -107,7 +107,7 @@ jobs:
       - name: Update version
         run: |
           chmod +x .ci/update_version.sh     
-          bash .ci/update_version.sh patch -p "$GITHUB_WORKSPACE/package.json"
+          npm version patch
           
       - name: Set Committer Identity
         run: |
