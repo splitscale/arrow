@@ -29,11 +29,11 @@ jobs:
         id: version-type
         run: |
           if [[ $MAJOR_UPDATE == true ]]; then
-            echo "VERSION_TYPE=major" >> $GITHUB_ENV
+            VERSION_TYPE=major
           elif [[ $MINOR_UPDATE == true ]]; then
-            echo "VERSION_TYPE=minor" >> $GITHUB_ENV
+            VERSION_TYPE=minor
           elif [[ $PATCH_UPDATE == true ]]; then
-            echo "VERSION_TYPE=patch" >> $GITHUB_ENV
+            VERSION_TYPE=patch
           fi
           
       - name: Increment Version
