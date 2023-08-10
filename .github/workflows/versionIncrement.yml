@@ -24,8 +24,8 @@ jobs:
 
       - name: Update version
         run: |
-          chmod +x .ci/update_version.sh     
-          npm version major
+          chmod +x .ci/test.sh     
+          bash .ci/test.sh
           
       - name: Set Committer Identity
         run: |
@@ -65,8 +65,8 @@ jobs:
 
       - name: Update version
         run: |
-          chmod +x .ci/update_version.sh     
-          bash npm version minor
+          chmod +x .ci/test.sh     
+          bash .ci/test.sh
           
       - name: Set Committer Identity
         run: |
@@ -106,8 +106,8 @@ jobs:
 
       - name: Update version
         run: |
-          chmod +x .ci/update_version.sh     
-          npm version patch
+          chmod +x .ci/test.sh     
+          bash .ci/test.sh
           
       - name: Set Committer Identity
         run: |
