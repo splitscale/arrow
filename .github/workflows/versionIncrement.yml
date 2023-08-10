@@ -15,7 +15,7 @@ jobs:
     
     steps:
       - name: Checkout local repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           token: ${{ env.SPLITSCALE_BOT_PAT }}
           ssh-key: ${{ env.BOT_SSH }}
