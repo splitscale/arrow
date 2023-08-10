@@ -28,16 +28,15 @@ jobs:
       - name: Determine Version Type and Increment
         id: version-type
         run: |
-          if [[ $MAJOR_UPDATE == true ]]; then
-            VERSION_TYPE=major
-          elif [[ $MINOR_UPDATE == true ]]; then
-            VERSION_TYPE=minor
-          elif [[ $PATCH_UPDATE == true ]]; then
-            VERSION_TYPE=patch
-          fi
-          
           chmod +x .ci/update_version.sh  
-          bash .ci/update_version.sh "$VERSION_TYPE" -p "$GITHUB_WORKSPACE/package.json"
+          
+          if [[ $MAJOR_UPDATE == true ]]; then
+            bash .ci/update_version.sh major -p "$GITHUB_WORKSPACE/package.json"
+          elif [[ $MINOR_UPDATE == true ]]; then
+            bash .ci/update_version.sh minor -p "$GITHUB_WORKSPACE/package.json"
+          elif [[ $PATCH_UPDATE == true ]]; then
+            bash .ci/update_version.sh patch -p "$GITHUB_WORKSPACE/package.json"
+          fi
              
       - name: Set Committer Identity
         run: |
