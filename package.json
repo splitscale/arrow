@@ -1,6 +1,6 @@
 {
   "name": "arrow",
-  "version": "1.8.0",
+  "version": "1.6.0",
   "scripts": {
     "start": "npx expo start",
     "android": "expo start --android",
