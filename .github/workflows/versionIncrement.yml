@@ -25,18 +25,23 @@ jobs:
           ssh-key: ${{ env.BOT_SSH }}
           ref: ${{ github.event.pull_request.head.ref }}
 
-      - name: Determine Version Type and Increment
-        id: version-type
+      - name: Major update
+        if: $MAJOR_UPDATE
         run: |
           chmod +x .ci/update_version.sh  
+          bash .ci/update_version.sh major -p "$GITHUB_WORKSPACE/package.json"
+      
+      - name: Minor update
+        if: $MINOR_UPDATE
+        run: |
+          chmod +x .ci/update_version.sh  
+          bash .ci/update_version.sh minor -p "$GITHUB_WORKSPACE/package.json"
           
-          if [[ $MAJOR_UPDATE == true ]]; then
-            bash .ci/update_version.sh major -p "$GITHUB_WORKSPACE/package.json"
-          elif [[ $MINOR_UPDATE == true ]]; then
-            bash .ci/update_version.sh minor -p "$GITHUB_WORKSPACE/package.json"
-          elif [[ $PATCH_UPDATE == true ]]; then
-            bash .ci/update_version.sh patch -p "$GITHUB_WORKSPACE/package.json"
-          fi
+      - name: Patch update
+        if: $PATCH_UPDATE
+        run: |
+          chmod +x .ci/update_version.sh  
+          bash .ci/update_version.sh patch -p "$GITHUB_WORKSPACE/package.json"
              
       - name: Set Committer Identity
         run: |
