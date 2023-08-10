@@ -25,7 +25,7 @@ jobs:
           ssh-key: ${{ env.BOT_SSH }}
           ref: ${{ github.event.pull_request.head.ref }}
 
-      - name: Determine Version Type
+      - name: Determine Version Type and Increment
         id: version-type
         run: |
           if [[ $MAJOR_UPDATE == true ]]; then
@@ -36,11 +36,9 @@ jobs:
             VERSION_TYPE=patch
           fi
           
-      - name: Increment Version
-        run: |
-          chmod +x .ci/update_version.sh     
+          chmod +x .ci/update_version.sh  
           bash .ci/update_version.sh "$VERSION_TYPE" -p "$GITHUB_WORKSPACE/package.json"
-          
+             
       - name: Set Committer Identity
         run: |
           git config --global user.name "${{ vars.BOT_USERNAME }}"
