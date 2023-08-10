@@ -29,15 +29,13 @@ jobs:
         id: version-type
         run: |
           if [[ $MAJOR_UPDATE == true ]]; then
-            echo "major"
+            echo "VERSION_TYPE=major" >> $GITHUB_ENV
           elif [[ $MINOR_UPDATE == true ]]; then
-            echo "minor"
+            echo "VERSION_TYPE=minor" >> $GITHUB_ENV
           elif [[ $PATCH_UPDATE == true ]]; then
-            echo "patch"
+            echo "VERSION_TYPE=patch" >> $GITHUB_ENV
           fi
-        env:
-          VERSION_TYPE: ${{ steps.version-type.outputs.stdout }}
-
+          
       - name: Increment Version
         run: |
           chmod +x .ci/update_version.sh     
