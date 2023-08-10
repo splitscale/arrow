@@ -39,7 +39,7 @@ jobs:
       - name: Increment Version
         run: |
           chmod +x .ci/update_version.sh     
-          bash .ci/update_version.sh "${{ env.VERSION_TYPE }}" -p "$GITHUB_WORKSPACE/package.json"
+          bash .ci/update_version.sh "$VERSION_TYPE" -p "$GITHUB_WORKSPACE/package.json"
           
       - name: Set Committer Identity
         run: |
