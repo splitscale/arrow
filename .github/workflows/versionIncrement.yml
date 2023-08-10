@@ -6,13 +6,16 @@ on:
       - main
 
 jobs:
-  major-version-increment:
+  version-increment:
     runs-on: ubuntu-latest
-    if: "contains(github.event.pull_request.title, '[break]')"
+    if: contains(github.event.pull_request.title, '[breaking change]') || contains(github.event.pull_request.title, '[feature]') || contains(github.event.pull_request.title, '[bugfix]')
 
     env:
       SPLITSCALE_BOT_PAT: ${{ secrets.SPLITSCALE_BOT_PAT }}
       BOT_SSH: ${{ secrets.BOT_SSH }}
+      MAJOR_UPDATE: ${{ contains(github.event.pull_request.title, '[breaking change]') }}
+      MINOR_UPDATE: ${{ contains(github.event.pull_request.title, '[feature]') }}
+      PATCH_UPDATE: ${{ contains(github.event.pull_request.title, '[bugfix]') }}
     
     steps:
       - name: Checkout local repository
@@ -22,11 +25,22 @@ jobs:
           ssh-key: ${{ env.BOT_SSH }}
           ref: ${{ github.event.pull_request.head.ref }}
 
-      - name: Update version
+      - name: Determine Version Type
+        id: version-type
+        run: |
+          if [[ ${{ env.MAJOR_UPDATE }} == true ]]; then
+            echo "VERSION_TYPE=major" >> $GITHUB_ENV
+          elif [[ ${{ env.MINOR_UPDATE }} == true ]]; then
+            echo "VERSION_TYPE=minor" >> $GITHUB_ENV
+          elif [[ ${{ env.PATCH_UPDATE }} == true ]]; then
+            echo "VERSION_TYPE=patch" >> $GITHUB_ENV
+          fi
+          
+      - name: Increment Version
         run: |
           chmod +x .ci/update_version.sh     
-          bash .ci/update_version.sh major -p "$GITHUB_WORKSPACE/package.json"
-          
+          bash .ci/update_version.sh "$VERSION_TYPE" -p "$GITHUB_WORKSPACE/package.json"
+             
       - name: Set Committer Identity
         run: |
           git config --global user.name "${{ vars.BOT_USERNAME }}"
@@ -46,86 +60,3 @@ jobs:
       - name: Push changes to branch
         run: |
           git push --follow-tags
-
-  minor-version-increment:
-    runs-on: ubuntu-latest
-    if: "contains(github.event.pull_request.title, '[feat]')"
-
-    env:
-      SPLITSCALE_BOT_PAT: ${{ secrets.SPLITSCALE_BOT_PAT }}
-      BOT_SSH: ${{ secrets.BOT_SSH }}
-    
-    steps:
-      - name: Checkout local repository
-        uses: actions/checkout@v3
-        with:
-          token: ${{ env.SPLITSCALE_BOT_PAT }}
-          ssh-key: ${{ env.BOT_SSH }}
-          ref: ${{ github.event.pull_request.head.ref }}
-
-      - name: Update version
-        run: |
-          chmod +x .ci/update_version.sh     
-          bash .ci/update_version.sh minor -p "$GITHUB_WORKSPACE/package.json"
-          
-      - name: Set Committer Identity
-        run: |
-          git config --global user.name "${{ vars.BOT_USERNAME }}"
-          git config --global user.email "${{ vars.BOT_EMAIL }}"
-
-      - name: Create version tag
-        run: |
-          VERSION=$(node -p "require('./package.json').version")
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          git tag v$VERSION
-
-      - name: Stage and Commit Changes
-        run: |
-          git add --all
-          git commit -m "Version bumped to v${{ env.VERSION }} [skip actions]"
-
-      - name: Push changes to branch
-        run: |
-          git push --follow-tags
-
-  patch-version-increment:
-    runs-on: ubuntu-latest
-    if: "contains(github.event.pull_request.title, '[fix]')"
-
-    env:
-      SPLITSCALE_BOT_PAT: ${{ secrets.SPLITSCALE_BOT_PAT }}
-      BOT_SSH: ${{ secrets.BOT_SSH }}
-    
-    steps:
-      - name: Checkout local repository
-        uses: actions/checkout@v3
-        with:
-          token: ${{ env.SPLITSCALE_BOT_PAT }}
-          ssh-key: ${{ env.BOT_SSH }}
-          ref: ${{ github.event.pull_request.head.ref }}
-
-      - name: Update version
-        run: |
-          chmod +x .ci/update_version.sh     
-          bash .ci/update_version.sh patch -p "$GITHUB_WORKSPACE/package.json"
-          
-      - name: Set Committer Identity
-        run: |
-          git config --global user.name "${{ vars.BOT_USERNAME }}"
-          git config --global user.email "${{ vars.BOT_EMAIL }}"
-
-      - name: Create version tag
-        run: |
-          VERSION=$(node -p "require('./package.json').version")
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          git tag v$VERSION
-
-      - name: Stage and Commit Changes
-        run: |
-          git add --all
-          git commit -m "Version bumped to v${{ env.VERSION }} [skip actions]"
-
-      - name: Push changes to branch
-        run: |
-          git push --follow-tags
-
