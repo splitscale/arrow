@@ -1,6 +1,6 @@
 {
   "name": "arrow",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "scripts": {
     "start": "npx expo start",
     "android": "expo start --android",
@@ -40,7 +40,8 @@
     "react-native-web": "~0.18.10",
     "react-redux": "^8.1.2",
     "redux": "^4.2.1",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "expo-image-picker": "~14.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
