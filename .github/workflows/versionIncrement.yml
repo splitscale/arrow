@@ -9,20 +9,16 @@ jobs:
   version-increment:
     runs-on: ubuntu-latest
     if: | 
-      contains(${{ env.PR_TITLE }}, ${{ env.BREAKING_CHANGE_TAG }}) || 
-      contains(${{ env.PR_TITLE }}, ${{ env.FEATURE_TAG }}) || 
-      contains(${{ env.PR_TITLE }}, ${{ env.BUGFIX_TAG }})
+      contains(github.event.pull_request.title, '[breaking change]') | 
+      contains(github.event.pull_request.title, '[feature]') | 
+      contains(github.event.pull_request.title, '[bugfix]')
 
     env:
-      PR_TITLE: ${{ github.event.pull_request.title }}
-      BREAKING_CHANGE_TAG: "[breaking change]"
-      FEATURE_TAG: "[feature]"
-      BUGFIX_TAG: "[bugfix]"
       SPLITSCALE_BOT_PAT: ${{ secrets.SPLITSCALE_BOT_PAT }}
       BOT_SSH: ${{ secrets.BOT_SSH }}
-      MAJOR_UPDATE: ${{ env.PR_TITLE =~ env.BREAKING_CHANGE_TAG }}
-      MINOR_UPDATE: ${{ env.PR_TITLE =~ env.FEATURE_TAG }}
-      PATCH_UPDATE: ${{ env.PR_TITLE =~ env.BUGFIX_TAG }}
+      MAJOR_UPDATE: contains(github.event.pull_request.title, '[breaking change]')
+      MINOR_UPDATE: contains(github.event.pull_request.title, '[feature]')
+      PATCH_UPDATE: contains(github.event.pull_request.title, '[bugfix]')
     
     steps:
       - name: Checkout local repository
