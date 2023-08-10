@@ -13,9 +13,9 @@ jobs:
     env:
       SPLITSCALE_BOT_PAT: ${{ secrets.SPLITSCALE_BOT_PAT }}
       BOT_SSH: ${{ secrets.BOT_SSH }}
-      MAJOR_UPDATE: $(contains(github.event.pull_request.title, '[breaking change]'))
-      MINOR_UPDATE: $(contains(github.event.pull_request.title, '[feature]'))
-      PATCH_UPDATE: $(contains(github.event.pull_request.title, '[bugfix]'))
+      MAJOR_UPDATE: ${{ contains(github.event.pull_request.title, '[breaking change]') }}
+      MINOR_UPDATE: ${{ contains(github.event.pull_request.title, '[feature]') }}
+      PATCH_UPDATE: ${{ contains(github.event.pull_request.title, '[bugfix]') }}
     
     steps:
       - name: Checkout local repository
