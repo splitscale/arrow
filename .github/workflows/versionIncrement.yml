@@ -8,10 +8,21 @@ on:
 jobs:
   version-increment:
     runs-on: ubuntu-latest
+    if: | 
+      contains(${{ env.PR_TITLE }}, ${{ env.BREAKING_CHANGE_TAG }}) || 
+      contains(${{ env.PR_TITLE }},, ${{ env.FEATURE_TAG }}) || 
+      contains(${{ env.PR_TITLE }},, ${{ env.BUGFIX_TAG }})
 
     env:
+      PR_TITLE: ${{ github.event.pull_request.title }}
+      BREAKING_CHANGE_TAG: "[breaking change]"
+      FEATURE_TAG: "[feature]"
+      BUGFIX_TAG: "[bugfix]"
       SPLITSCALE_BOT_PAT: ${{ secrets.SPLITSCALE_BOT_PAT }}
       BOT_SSH: ${{ secrets.BOT_SSH }}
+      MAJOR_UPDATE: ${{ env.PR_TITLE =~ env.BREAKING_CHANGE_TAG }}
+      MINOR_UPDATE: ${{ env.PR_TITLE =~ env.FEATURE_TAG }}
+      PATCH_UPDATE: ${{ env.PR_TITLE =~ env.BUGFIX_TAG }}
     
     steps:
       - name: Checkout local repository
@@ -24,11 +35,11 @@ jobs:
       - name: Determine Version Type
         id: version-type
         run: |
-          if [[ ${{ github.event.pull_request.title }} == *'[breaking change]'* ]]; then
+          if [[ $MAJOR_UPDATE == true ]]; then
             echo "major"
-          elif [[ ${{ github.event.pull_request.title }} == *'[feature]'* ]]; then
+          elif [[ $MINOR_UPDATE == true ]]; then
             echo "minor"
-          elif [[ ${{ github.event.pull_request.title }} == *'[bugfix]'* ]]; then
+          elif [[ $PATCH_UPDATE == true ]]; then
             echo "patch"
           fi
         env:
@@ -36,15 +47,15 @@ jobs:
 
       - name: Increment Version
         run: |
-          chmod +x .ci/update_version.sh
-          bash .ci/update_version.sh ${{ env.VERSION_TYPE }} -p "$GITHUB_WORKSPACE/package.json"
-
+          chmod +x .ci/update_version.sh     
+          bash .ci/update_version.sh $VERSION_TYPE -p "$GITHUB_WORKSPACE/package.json"
+          
       - name: Set Committer Identity
         run: |
           git config --global user.name "${{ vars.BOT_USERNAME }}"
           git config --global user.email "${{ vars.BOT_EMAIL }}"
 
-      - name: Create Version Tag
+      - name: Create version tag
         run: |
           VERSION=$(node -p "require('./package.json').version")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
@@ -55,6 +66,6 @@ jobs:
           git add --all
           git commit -m "Version bumped to v${{ env.VERSION }} [skip actions]"
 
-      - name: Push Changes to Branch
+      - name: Push changes to branch
         run: |
           git push --follow-tags
