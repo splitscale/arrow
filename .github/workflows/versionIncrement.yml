@@ -28,7 +28,7 @@ jobs:
       - name: Determine Version Type
         id: version-type
         run: |
-          echo ${{ env.MAJOR_UPDATE }} ${{ MINOR_UPDATE }} ${{ PATCH_UPDATE }}
+          echo "${{ env.MAJOR_UPDATE }} ${{ MINOR_UPDATE }} ${{ PATCH_UPDATE }}"
           
           if [[ ${{ env.MAJOR_UPDATE }} == true ]]; then
             echo "VERSION_TYPE=major" >> $GITHUB_ENV
