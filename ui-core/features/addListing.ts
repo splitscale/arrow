@@ -1,5 +1,5 @@
-import { ListingInformation } from "../types/listingInfo";
+import { ListingInformation } from "../types/listingInformation";
 
-export function addListing(id: string): ListingInformation {
-    return { id: id }
+export function addListing (listing: ListingInformation): ListingInformation {
+    return listing
 }
