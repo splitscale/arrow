@@ -8,10 +8,7 @@ on:
 jobs:
   version-increment:
     runs-on: ubuntu-latest
-    if: | 
-      contains(github.event.pull_request.title, '[breaking change]') | 
-      contains(github.event.pull_request.title, '[feature]') | 
-      contains(github.event.pull_request.title, '[bugfix]')
+    if: contains(github.event.pull_request.title, '[breaking change]') || contains(github.event.pull_request.title, '[feature]') || contains(github.event.pull_request.title, '[bugfix]')
 
     env:
       SPLITSCALE_BOT_PAT: ${{ secrets.SPLITSCALE_BOT_PAT }}
