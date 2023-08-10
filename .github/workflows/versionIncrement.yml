@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     if: | 
       contains(${{ env.PR_TITLE }}, ${{ env.BREAKING_CHANGE_TAG }}) || 
-      contains(${{ env.PR_TITLE }},, ${{ env.FEATURE_TAG }}) || 
-      contains(${{ env.PR_TITLE }},, ${{ env.BUGFIX_TAG }})
+      contains(${{ env.PR_TITLE }}, ${{ env.FEATURE_TAG }}) || 
+      contains(${{ env.PR_TITLE }}, ${{ env.BUGFIX_TAG }})
 
     env:
       PR_TITLE: ${{ github.event.pull_request.title }}
