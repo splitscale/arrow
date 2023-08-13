@@ -1,10 +1,10 @@
-import { Coordinate } from "../../service/modules/location/type/Coordinate"
+import { Coordinate } from "../../../modules/location/type/Coordinate"
 
-export interface ListingInformation {
-    id: string  //user id
+export interface ListingInfo {
+    userId: string
     images: string
     coordinates: Coordinate
-    name: string
+    propertyName: string
     bedType: string
     description: string
     amenities: string
