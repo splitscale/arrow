@@ -16,7 +16,7 @@ import {
   writeBatch,
 } from 'firebase/firestore';
 import { uuid } from '../uuid';
-import { logger } from '../../utils/logger';
+import { logger } from '../../../utils/logger';
 
 export class FirebaseRepository implements BaseRepository {
   private db: Firestore;

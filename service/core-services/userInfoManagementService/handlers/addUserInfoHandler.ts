@@ -1,6 +1,9 @@
 import { BaseHandler, DuffleRequest, DuffleResponse } from 'duffle';
 import BaseRepository from '../../../repository/baseRepository';
 import { UserInfoRepositoryInteractor } from '../userInfoRepositoryInteractor';
+import { convertMapToObject } from '../../../../utils/convertMapToObject';
+import { UserInfo } from '../type/userInfoType';
+import { ObjectWithIdWrapperWithMetadata } from '../../../repository/repositoryTypes';
 
 export class AddUserInfoHandler extends BaseHandler {
   private readonly interactor: UserInfoRepositoryInteractor;
@@ -16,32 +19,45 @@ export class AddUserInfoHandler extends BaseHandler {
   public async handle(request: DuffleRequest): Promise<DuffleResponse> {
     const body = request.body as Map<string, any> | undefined;
 
-    const firstName = body?.get('firstName');
-    const lastName = body?.get('lastName');
-    const userName = body?.get('userName');
-    const email = body?.get('email');
-    const photoUrl = body?.get('photoUrl');
-    const phoneNumber = body?.get('phoneNumber');
-    const docId = body?.get('id');
-    const metadata = body?.get('metadata');
+    if (!body) {
+      throw new Error('cannot add user info, request body is undefined');
+    }
+
+    const {
+      firstName,
+      lastName,
+      userName,
+      email,
+      photoUrl,
+      phoneNumber,
+      id,
+      metadata,
+    } =
+      convertMapToObject<
+        ObjectWithIdWrapperWithMetadata<UserInfo, string, any>
+      >(body);
 
     try {
-      const id = await this.interactor.add({
-        id: docId,
+      const resId = await this.interactor.add({
+        id: id,
         data: {
           firstName: firstName,
           lastName: lastName,
-          userName: userName,
+          userName: userName ?? null,
           email: email,
-          photoUrl: photoUrl,
-          phoneNumber: phoneNumber,
+          photoUrl: photoUrl ?? null,
+          phoneNumber: phoneNumber ?? null,
         },
-        metadata: metadata,
+        metadata: metadata ?? null,
       });
+
+      if (!id) {
+        throw new Error(`Could not add ${id}`);
+      }
 
       const res: DuffleResponse = {
         status: 'OK',
-        body: id,
+        body: resId,
       };
 
       return Promise.resolve(res);

@@ -1,4 +1,4 @@
-import { NODE_ENV } from '../../env.secret';
+import { NODE_ENV } from '../env.secret';
 
 class Logger {
   private isDev: boolean;

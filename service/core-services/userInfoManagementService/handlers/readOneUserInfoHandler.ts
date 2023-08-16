@@ -1,6 +1,7 @@
 import { BaseHandler, DuffleRequest, DuffleResponse } from 'duffle';
 import BaseRepository from '../../../repository/baseRepository';
 import { UserInfoRepositoryInteractor } from '../userInfoRepositoryInteractor';
+import { logger } from '../../../../utils/logger';
 
 export class ReadOneUserInfoHandler extends BaseHandler {
   private readonly interactor: UserInfoRepositoryInteractor;
@@ -15,18 +16,14 @@ export class ReadOneUserInfoHandler extends BaseHandler {
 
   public async handle(request: DuffleRequest): Promise<DuffleResponse> {
     const body = request.body as Map<string, any> | undefined;
-
-   // const firstName = body?.get('firstName');
-   // const lastName = body?.get('lastName');
-   // const username = body?.get('username');
-   // const email = body?.get('email');
-   // const profilePic = body?.get('profilePic');
-   // const phoneNumber = body?.get('phoneNumber');
     const docId = body?.get('id');
-   // const metadata = body?.get('metadata');
 
     try {
       const data = await this.interactor.getOne(docId);
+
+      if (!data) {
+        throw new Error(`Could not find ${docId}`);
+      }
 
       const res: DuffleResponse = {
         status: 'OK',
