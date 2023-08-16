@@ -1,6 +1,6 @@
 {
   "name": "arrow",
-  "version": "2.7.0",
+  "version": "1.11.0",
   "scripts": {
     "start": "expo start --dev-client",
     "android": "expo run:android",
@@ -10,7 +10,8 @@
     "testDebug": "jest -o --watch --coverage=false",
     "testFinal": "jest",
     "updateSnapshots": "jest -u --coverage=false",
-    "prebuild": "npx expo prebuild && npx react-native run-android"
+    "prebuild": "npx expo prebuild && npx react-native run-android",
+    "dev": "npx react-native run-android"
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",

@@ -16,7 +16,7 @@ import {
   writeBatch,
 } from 'firebase/firestore';
 import { uuid } from '../uuid';
-import { logger } from '../../utils/logger';
+import { logger } from '../../../utils/logger';
 
 export class FirebaseRepository implements BaseRepository {
   private db: Firestore;
@@ -91,20 +91,20 @@ export class FirebaseRepository implements BaseRepository {
     document: RepositoryDocumentRequestOf<T>,
     filters?: Map<string, any>
   ): Promise<boolean> {
-    const id = document.id;
+    const id = filters?.get('id');
     const data = document.data;
-
+    
     try {
       if (!id) return Promise.reject('id is required when updating');
       if (!data) return Promise.reject('data is required when updating');
 
       const documentRef = doc(this.db, collection, id);
-      updateDoc(documentRef, data);
+      await updateDoc(documentRef, data);
 
       logger.info(`Document {${id}} updated successfully`);
       return true;
     } catch (error) {
-      logger.error(`Error updating document {${id}} with an error: `);
+      logger.error(`Error updating document {${id}} with an error: ${error}`);
       return false;
     }
   }
