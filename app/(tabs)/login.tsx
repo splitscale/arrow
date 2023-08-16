@@ -1,17 +1,34 @@
 import React, { useState } from 'react';
 import { TextInput, Pressable, Alert } from 'react-native';
 import { View, Text } from '../../components/Themed';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { useForm, Controller } from 'react-hook-form';
+import { handleEmailAndPasswordLogin } from '../../ui-core/handlers/auth/handleEmailAndPasswordLogin';
+import { logger } from '../../utils/logger';
 
 export default function LoginScreen() {
   const { control, handleSubmit } = useForm();
-  const emailRegex = /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/;
+  const emailRegex = /^[\w.-]+@[a-zA-Z\d-]+\.[a-zA-Z]{2,}$/;
   const [showPassword, setShowPassword] = useState(false);
 
-  const onLogInPressed = (data: any) => {
-    console.log('Login pressed');
-    console.log(data);
+  const router = useRouter();
+
+  const onLogInPressed = async (data: any) => {
+    const email = data['email'];
+    const password = data['password'];
+
+    try {
+      logger.info('logging in: ' + email);
+
+      await handleEmailAndPasswordLogin(email, password);
+      router.push('/home');
+    } catch (error) {
+      logger.error(error);
+
+      Alert.alert('Oops!', 'Wrong email or password, please try again.', [
+        { text: 'retry' },
+      ]);
+    }
   };
 
   return (
@@ -22,9 +39,15 @@ export default function LoginScreen() {
         name="email"
         rules={{
           required: 'Enter email address',
-          pattern: { value: emailRegex, message: 'Please enter a valid email address.' },
+          pattern: {
+            value: emailRegex,
+            message: 'Please enter a valid email address.',
+          },
         }}
-        render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
+        render={({
+          field: { value, onChange, onBlur },
+          fieldState: { error },
+        }) => (
           <>
             <TextInput
               className="w-2/3 h-10 rounded-xl border border-gray-200 bg-slate-50 dark:border-white border-radius-20 mb-2 mt-10 px-5"
@@ -34,7 +57,9 @@ export default function LoginScreen() {
               placeholder="Email"
             />
             {error && (
-              <Text className="w-7/12 text-red-600">{error.message || 'Error'}</Text>
+              <Text className="w-7/12 text-red-600">
+                {error.message ?? 'Error'}
+              </Text>
             )}
           </>
         )}
@@ -44,7 +69,10 @@ export default function LoginScreen() {
         control={control}
         name="password"
         rules={{ required: 'Enter password' }}
-        render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
+        render={({
+          field: { value, onChange, onBlur },
+          fieldState: { error },
+        }) => (
           <>
             <TextInput
               className="w-2/3 h-10 rounded-xl border border-gray-200 bg-slate-50 dark:border-white border-radius-20 mb-2 mt-3 px-5"
@@ -52,10 +80,12 @@ export default function LoginScreen() {
               onChangeText={(text) => onChange(text)}
               onBlur={onBlur}
               placeholder="Password"
-              secureTextEntry={!showPassword} 
+              secureTextEntry={!showPassword}
             />
             {error && (
-              <Text className="w-7/12 text-red-600">{error.message || 'Error'}</Text>
+              <Text className="w-7/12 text-red-600">
+                {error.message ?? 'Error'}
+              </Text>
             )}
           </>
         )}
@@ -70,9 +100,7 @@ export default function LoginScreen() {
             className="w-4 h-4 rounded-2xl border-black mr-2 flex items-center justify-center"
             style={{ borderWidth: 2 }}
           >
-            {showPassword && (
-              <View className="w-2 h-2 rounded bg-black" />
-            )}
+            {showPassword && <View className="w-2 h-2 rounded bg-black" />}
           </View>
           <Text>Show Password</Text>
         </Pressable>
@@ -80,7 +108,9 @@ export default function LoginScreen() {
 
       <Link href={'/index'} asChild>
         <Pressable className="w-2/3">
-          <Text className="text-blue-700 mb-12 text-right">Forgot password?</Text>
+          <Text className="text-blue-700 mb-12 text-right">
+            Forgot password?
+          </Text>
         </Pressable>
       </Link>
 

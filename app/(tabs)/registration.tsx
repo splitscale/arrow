@@ -4,6 +4,7 @@ import { TextInput, Pressable, Alert } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import { useForm, Controller } from 'react-hook-form';
 import { handleEmailAndPasswordRegistration } from '../../ui-core/handlers/auth/handleEmailAndPasswordRegistration';
+import { logger } from '../../utils/logger';
 
 export default function Registration() {
   const { control, handleSubmit, watch } = useForm();
@@ -13,10 +14,24 @@ export default function Registration() {
   const router = useRouter();
 
   const registerPress = async (data: any) => {
+    const email = data['email'];
+    const password = data['password'];
+    const firstName = data['firstName'];
+    const lastName = data['lastName'];
+
+    logger.info('Registering: ' + email);
+
     try {
-      await handleEmailAndPasswordRegistration(data['email'], data['password']);
+      await handleEmailAndPasswordRegistration(
+        email,
+        password,
+        firstName,
+        lastName
+      );
       router.push('/home');
     } catch (error) {
+      logger.error(error);
+
       Alert.alert('Oops!', 'Email already in use, please login.', [
         { text: 'retry' },
         {

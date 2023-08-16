@@ -1,14 +1,14 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import FirebaseAccessor from '../../../service/dataAccess/firebase/firebaseAccessor';
 import { FirebaseError } from 'firebase/app';
 import { User } from '../../types/user';
 import FirebaseConfigurer from '../../../service/dataAccess/firebase/firebaseConfigurer';
 
-export async function passwordSignup(email: string, password: string) {
+export async function passwordSignin(email: string, password: string) {
   if (!FirebaseConfigurer.getFirebaseApp()) FirebaseConfigurer.init();
 
   try {
-    const res = await createUserWithEmailAndPassword(
+    const res = await signInWithEmailAndPassword(
       FirebaseAccessor.getAuth(),
       email,
       password

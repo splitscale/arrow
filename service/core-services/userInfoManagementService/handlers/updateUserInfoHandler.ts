@@ -35,6 +35,10 @@ export class UpdateUserInfoHandler extends BaseHandler {
         phoneNumber: phoneNumber,
       });
 
+      if (!data) {
+        throw new Error(`Error updating doc ${docId}`);
+      }
+
       const res: DuffleResponse = {
         status: 'OK',
         body: data,

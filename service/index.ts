@@ -3,6 +3,7 @@ import { UserInfoRegistrator } from './core-services/userInfoManagementService/u
 import FirebaseAccessor from './dataAccess/firebase/firebaseAccessor';
 import { FirebaseRepository } from './dataAccess/firebase/firebaseRepository';
 import FirebaseConfigurer from './dataAccess/firebase/firebaseConfigurer';
+import { ListingRegistrator } from './core-services/listingInfoManagement/listingRegistrator';
 
 const Service = (): HandlerResolver => {
   if (!FirebaseConfigurer.getFirebaseApp()) FirebaseConfigurer.init();
@@ -13,6 +14,7 @@ const Service = (): HandlerResolver => {
 
   const collector = new HandlerRegistratorCollector([
     new UserInfoRegistrator(db),
+    new ListingRegistrator(db),
   ]);
 
   const resolver = new HandlerResolver(collector);
