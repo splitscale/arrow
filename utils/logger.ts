@@ -1,10 +1,8 @@
-import { NODE_ENV } from '../env.secret';
-
 class Logger {
   private isDev: boolean;
 
   constructor() {
-    this.isDev = NODE_ENV === 'development';
+    this.isDev = process.env.EXPO_PUBLIC_NODE_ENV === 'development';
   }
 
   info(msg: any): void {

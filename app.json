@@ -12,9 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -23,10 +21,9 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ],
-      "package": "com.splitscale.sublx"
+      "permissions": ["android.permission.RECORD_AUDIO"],
+      "package": "com.splitscale.sublx",
+      "versionCode": 1
     },
     "web": {
       "bundler": "metro",
@@ -39,6 +36,11 @@
           "photosPermission": "Allow $(PRODUCT_NAME) to access your photos"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "ee71d86e-966b-40ac-ba4a-c27cbfcc4e78"
+      }
+    }
   }
 }
