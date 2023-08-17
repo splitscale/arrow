@@ -1,6 +1,7 @@
+import { ENCRYPTION_KEY } from '@env';
 import { MMKV } from 'react-native-mmkv';
 
 export const currentUserStorage = new MMKV({
   id: 'currentUser',
-  encryptionKey: process.env.EXPO_PUBLIC_ENCRYPTION_KEY,
+  encryptionKey: ENCRYPTION_KEY,
 });

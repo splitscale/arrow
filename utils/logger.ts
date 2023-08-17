@@ -1,8 +1,10 @@
+import { NODE_ENV } from '@env';
+
 class Logger {
   private isDev: boolean;
 
   constructor() {
-    this.isDev = process.env.EXPO_PUBLIC_NODE_ENV === 'development';
+    this.isDev = NODE_ENV === 'development';
   }
 
   info(msg: any): void {
