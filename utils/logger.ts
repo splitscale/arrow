@@ -1,30 +1,30 @@
-import { NODE_ENV } from '@env';
+import { saveLogsToDb } from './saveLogsToDb';
 
 class Logger {
-  private isDev: boolean;
-
-  constructor() {
-    this.isDev = NODE_ENV === 'development';
+  private saveLog(msg: any) {
+    saveLogsToDb(msg)
+      .then(() => {})
+      .catch(console.error);
   }
 
   info(msg: any): void {
-    if (!this.isDev) return;
     console.info(msg);
+    this.saveLog(msg);
   }
 
   error(msg: any): void {
-    if (!this.isDev) return;
     console.error(msg);
+    this.saveLog(msg);
   }
 
   warn(msg: any): void {
-    if (!this.isDev) return;
     console.warn(msg);
+    this.saveLog(msg);
   }
 
   debug(msg: any): void {
-    if (!this.isDev) return;
     console.debug(msg);
+    this.saveLog(msg);
   }
 }
 

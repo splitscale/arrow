@@ -2,7 +2,7 @@
   "expo": {
     "name": "sublx",
     "slug": "sublx",
-    "version": "1.0.0",
+    "version": "1.0.5",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -23,7 +23,7 @@
       },
       "permissions": ["android.permission.RECORD_AUDIO"],
       "package": "com.splitscale.sublx",
-      "versionCode": 1
+      "versionCode": 6
     },
     "web": {
       "bundler": "metro",

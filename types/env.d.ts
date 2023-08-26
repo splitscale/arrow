@@ -6,5 +6,5 @@ declare module '@env' {
   export const MESSAGING_SENDER_ID: string;
   export const APP_ID: string;
   export const ENCRYPTION_KEY: string;
-  export const NODE_ENV: string;
+  export const ENVIRONMENT: string;
 }

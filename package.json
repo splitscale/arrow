@@ -11,7 +11,8 @@
     "testFinal": "jest",
     "updateSnapshots": "jest -u --coverage=false",
     "prebuild": "npx expo prebuild && npx react-native run-android",
-    "dev": "npx react-native run-android"
+    "dev": "npx react-native run-android",
+    "deploy": "npx expo prebuild && eas build --platform android"
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
@@ -44,7 +45,8 @@
     "react-native-web": "~0.18.10",
     "react-redux": "^8.1.2",
     "redux": "^4.2.1",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "expo-file-system": "~15.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

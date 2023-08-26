@@ -3,6 +3,7 @@ import { service } from '..';
 import { deleteApp } from 'firebase/app';
 import FirebaseConfigurer from '../dataAccess/firebase/firebaseConfigurer';
 
+
 it('should be able to add a new property listing to the database', async () => {
   const body = new Map<string, any>();
   body.set('userId', 'test-userId');
