@@ -54,6 +54,23 @@ describe('Listing info integration test', () => {
     }
   });
 
+  it('should be able to return all listing info', async() => {
+    const request: DuffleRequest = {
+      method: 'GET',
+      url: '/api/listinginfo'
+    };
+
+    try {
+      const res = await service.resolve(request);
+      console.log(res);
+      return Promise.resolve();
+    } catch (error) {
+      console.error(error);
+      return Promise.reject();
+    }
+
+  });
+
   afterAll(async () => {
     await Promise.all([deleteApp(FirebaseConfigurer.getFirebaseApp())]);
   });
