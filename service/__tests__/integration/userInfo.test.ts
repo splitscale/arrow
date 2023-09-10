@@ -1,18 +1,22 @@
-import { DuffleRequest } from "duffle";
-import { service } from "../..";
-import { deleteApp } from "firebase/app";
-import FirebaseConfigurer from "../../dataAccess/firebase/firebaseConfigurer";
+import { DuffleRequest } from 'duffle';
+import { service } from '../..';
+import { deleteApp } from 'firebase/app';
+import FirebaseConfigurer from '../../dataAccess/firebase/firebaseConfigurer';
 
 describe('user info integration test', () => {
   it('should be able to add a new userInfo to the database', async () => {
+    const data = {
+      firstName: 'john',
+      lastName: 'wick',
+      userName: 'johnwick',
+      email: 'wick@john.com',
+      photoUrl: 'wick-pic',
+      phoneNumber: '0912345689',
+    };
+
     const body = new Map<string, any>();
-    body.set('firstName', 'john');
-    body.set('lastName', 'wick');
-    body.set('userName', 'johnwick');
-    body.set('email', 'wick@john.com');
-    body.set('photoUrl', 'wick-pic');
-    body.set('phoneNumber', '0912345689');
     body.set('id', 'test-id');
+    body.set('data', data);
 
     const request: DuffleRequest = {
       method: 'POST',
@@ -32,9 +36,9 @@ describe('user info integration test', () => {
 
   it('should be able to read all userInfo', async () => {
     const req: DuffleRequest = {
-      method: "GET",
-      url: "/api/userinfo",
-    }
+      method: 'GET',
+      url: '/api/userinfo',
+    };
 
     try {
       const res = await service.resolve(req);
@@ -44,17 +48,17 @@ describe('user info integration test', () => {
       console.error(error);
       Promise.reject();
     }
-  })
+  });
 
   it('should be able to read one of the userInfo', async () => {
     const body = new Map<string, any>();
     body.set('id', 'test-id');
 
     const req: DuffleRequest = {
-      method: "GET",
-      url: "/api/userinfo/id",
-      body: body
-    }
+      method: 'GET',
+      url: '/api/userinfo/id',
+      body: body,
+    };
 
     try {
       const res = await service.resolve(req);
@@ -64,7 +68,7 @@ describe('user info integration test', () => {
       console.error(error);
       Promise.reject();
     }
-  })
+  });
 
   it('should be able to update userInfo', async () => {
     try {
@@ -78,10 +82,10 @@ describe('user info integration test', () => {
       bodyCopy.set('id', 'test-id');
 
       const req: DuffleRequest = {
-        method: "PUT",
-        url: "/api/userinfo",
+        method: 'PUT',
+        url: '/api/userinfo',
         body: bodyCopy,
-      }
+      };
       const res = await service.resolve(req);
       console.log(res.body);
       Promise.resolve();
@@ -89,17 +93,17 @@ describe('user info integration test', () => {
       console.error(error);
       Promise.reject();
     }
-  })
+  });
 
   it('should be able to delete userInfo', async () => {
-    const body = new Map<string,any> ()
-    body.set('id','test-id');
+    const body = new Map<string, any>();
+    body.set('id', 'test-id');
 
     const req: DuffleRequest = {
-      method: "DELETE",
-      url: "/api/userinfo",
-      body: body
-    }
+      method: 'DELETE',
+      url: '/api/userinfo',
+      body: body,
+    };
 
     try {
       const res = await service.resolve(req);
@@ -109,9 +113,9 @@ describe('user info integration test', () => {
       console.error(error);
       Promise.reject();
     }
-  })
+  });
 
   afterAll(async () => {
     await Promise.all([deleteApp(FirebaseConfigurer.getFirebaseApp())]);
   });
-})
+});

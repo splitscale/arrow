@@ -12,12 +12,13 @@ export interface RepositoryDocumentRequestOf<T> {
 
 export type ObjectWithIdWrapper<T, ID extends string | number> = {
   id: ID;
-} & T;
+  data: T;
+};
 
 export type ObjectWithIdWrapperWithMetadata<
-  T,
+  Body,
   ID extends string | number,
   Meta = null
-> = ObjectWithIdWrapper<T, ID> & {
+> = ObjectWithIdWrapper<Body, ID> & {
   metadata: Meta; // Setting the default value of metadata to null
 };
