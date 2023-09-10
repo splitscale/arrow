@@ -1,6 +1,6 @@
 {
   "name": "arrow",
-  "version": "2.15.0",
+  "version": "2.15.1",
   "scripts": {
     "start": "expo start --dev-client",
     "android": "expo run:android",
