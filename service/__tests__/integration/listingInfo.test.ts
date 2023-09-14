@@ -5,18 +5,22 @@ import FirebaseConfigurer from '../../dataAccess/firebase/firebaseConfigurer';
 
 describe('Listing info integration test', () => {
   it('should be able to add a new property listing to the database', async () => {
+    const data = {
+      userId: 'test-userId',
+      images: 'test-images',
+      coordinates: { lat: 72, long: 144 },
+      propertyName: 'test-propertyName',
+      bedType: 'test-bedType',
+      description: 'test-description',
+      amenities: 'test-amenities',
+      prices: 'test-prices',
+      availabilityStatus: 'test-availabilityStatus',
+      houseRules: 'test-houseRules',
+    };
+
     const body = new Map<string, any>();
-    body.set('userId', 'test-userId');
-    body.set('images', 'test-images');
-    body.set('coordinates', { lat: 72, long: 144 });
-    body.set('propertyName', 'test-propertyName');
-    body.set('bedType', 'test-bedType');
-    body.set('description', 'test-description');
-    body.set('amenities', 'test-amenities');
-    body.set('prices', 'test-prices');
-    body.set('availabilityStatus', 'test-availabilityStatus');
-    body.set('houseRules', 'test-houseRules');
     body.set('id', 'test-id');
+    body.set('data', data);
 
     const request: DuffleRequest = {
       method: 'POST',
@@ -42,6 +46,22 @@ describe('Listing info integration test', () => {
       method: 'GET',
       url: '/api/listinginfo/id',
       body: body,
+    };
+
+    try {
+      const res = await service.resolve(request);
+      console.log(res);
+      return Promise.resolve();
+    } catch (error) {
+      console.error(error);
+      return Promise.reject();
+    }
+  });
+
+  it('should be able to return all listing info', async () => {
+    const request: DuffleRequest = {
+      method: 'GET',
+      url: '/api/listinginfo',
     };
 
     try {
