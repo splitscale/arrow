@@ -1,6 +1,10 @@
 import { BaseHandler, DuffleRequest, DuffleResponse } from 'duffle';
 import BaseRepository from '../../../repository/baseRepository';
 import { ListingRepositoryInteractor } from '../listingRepositoryInteractor';
+import { UserInfo } from 'firebase/auth';
+import { convertMapToObject } from '../../../../utils/convertMapToObject';
+import { ObjectWithIdWrapperWithMetadata } from '../../../repository/repositoryTypes';
+import { ListingInfo } from '../type/listingInfoType';
 
 export class AddListingInfoHandler extends BaseHandler {
   private readonly interactor: ListingRepositoryInteractor;
@@ -16,41 +20,27 @@ export class AddListingInfoHandler extends BaseHandler {
   public async handle(request: DuffleRequest): Promise<DuffleResponse> {
     const body = request.body as Map<string, any> | undefined;
 
-    const userId = body?.get('userId');
-    const images = body?.get('images');
-    const coordinates = body?.get('coordinates');
-    const propertyName = body?.get('propertyName');
-    const bedType = body?.get('bedType');
-    const description = body?.get('description');
-    const amenities = body?.get('amenities');
-    const prices = body?.get('prices');
-    const availabilityStatus = body?.get('availabilityStatus');
-    const houseRules = body?.get('houseRules');
+    if (!body) {
+      throw new Error('cannot add user info, request body is undefined');
+    }
 
-    const docId = body?.get('id');
-    const metadata = body?.get('metadata');
+    const { id, data, metadata } =
+      convertMapToObject<
+        ObjectWithIdWrapperWithMetadata<ListingInfo, string, any>
+      >(body);
+
+    console.log([id, data, metadata]);
 
     try {
-      const id = await this.interactor.add({
-        id: docId,
-        data: {
-          userId: userId,
-          images: images,
-          coordinates: coordinates,
-          propertyName: propertyName,
-          bedType: bedType,
-          description: description,
-          amenities: amenities,
-          prices: prices,
-          availabilityStatus: availabilityStatus,
-          houseRules: houseRules
-        },
+      const resId = await this.interactor.add({
+        id: id,
+        data: data,
         metadata: metadata,
       });
 
       const res: DuffleResponse = {
         status: 'OK',
-        body: id,
+        body: resId,
       };
 
       return Promise.resolve(res);

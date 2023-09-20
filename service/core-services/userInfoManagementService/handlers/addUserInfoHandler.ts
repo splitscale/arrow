@@ -23,32 +23,18 @@ export class AddUserInfoHandler extends BaseHandler {
       throw new Error('cannot add user info, request body is undefined');
     }
 
-    const {
-      firstName,
-      lastName,
-      userName,
-      email,
-      photoUrl,
-      phoneNumber,
-      id,
-      metadata,
-    } =
+    const { id, data, metadata } =
       convertMapToObject<
         ObjectWithIdWrapperWithMetadata<UserInfo, string, any>
       >(body);
 
+    console.log([id, data, metadata]);
+
     try {
       const resId = await this.interactor.add({
         id: id,
-        data: {
-          firstName: firstName,
-          lastName: lastName,
-          userName: userName ?? null,
-          email: email,
-          photoUrl: photoUrl ?? null,
-          phoneNumber: phoneNumber ?? null,
-        },
-        metadata: metadata ?? null,
+        data: data,
+        metadata: metadata,
       });
 
       if (!id) {

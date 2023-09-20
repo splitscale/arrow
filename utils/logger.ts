@@ -1,9 +1,17 @@
 import { saveLogsToDb } from './saveLogsToDb';
 
 class Logger {
+  private logs: any[] = [];
+
   private saveLog(msg: any) {
-    saveLogsToDb(msg)
-      .then(() => {})
+    this.logs.push(msg);
+  }
+
+  public saveLogs() {
+    Promise.all(this.logs.map((log) => saveLogsToDb(log)))
+      .then(() => {
+        this.logs = [];
+      }) // Clear logs after saving
       .catch(console.error);
   }
 
