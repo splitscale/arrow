@@ -52,7 +52,39 @@ describe('Listing info integration test', () => {
       console.error(error);
       return Promise.reject();
     }
-  });
+  })
+
+  it('should be able to update a listing\'s information', async () =>{
+    try {
+      const bodyCopy = new Map<string, any>();
+      bodyCopy.set('id', 'test-id');
+      bodyCopy.set('userId', 'test-update-id');
+      bodyCopy.set('images', 'test-update-image');
+      bodyCopy.set('coordinates', 'test-update-coordinates');
+      bodyCopy.set('propertyName', 'test-update-propertyName');
+      bodyCopy.set('bedType', 'test-update-bedType');
+      bodyCopy.set('description', 'test-update-description') ;
+      bodyCopy.set('amenities', 'test-update-amenities');
+      bodyCopy.set('prices', 'test-update-prices');
+      bodyCopy.set('availabilityStatus', 'test-update-availabilityStatus');
+      bodyCopy.set('houseRules','test-update-houseRules');
+
+
+      const request: DuffleRequest = {
+        method: 'PUT',
+        url: 'api/listinginfo',
+        body: bodyCopy
+      }
+
+      const res =  await service.resolve(request);
+      console.log(res.body);
+      Promise.resolve();
+
+    } catch(error) {
+      console.error(error);
+      Promise.reject();
+    }
+  })
 
   afterAll(async () => {
     await Promise.all([deleteApp(FirebaseConfigurer.getFirebaseApp())]);
