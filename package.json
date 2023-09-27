@@ -12,6 +12,7 @@
     "updateSnapshots": "jest -u --coverage=false",
     "prebuild": "npx expo prebuild && npx react-native run-android",
     "dev": "npx react-native run-android",
+    "metro": "npx react-native start --reset-cache",
     "deploy": "npx expo prebuild && eas build --platform android",
     "testCurrentFile": "jest --watch"
   },
