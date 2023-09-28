@@ -1,6 +1,9 @@
 import { BaseHandler, DuffleRequest, DuffleResponse } from 'duffle';
 import BaseRepository from '../../../repository/baseRepository';
 import { UserInfoRepositoryInteractor } from '../userInfoRepositoryInteractor';
+import { convertMapToObject } from '../../../../utils/convertMapToObject';
+import { UserInfo } from '../type/userInfoType';
+import { ObjectWithIdWrapperWithMetadata } from '../../../repository/repositoryTypes';
 
 export class AddUserInfoHandler extends BaseHandler {
   private readonly interactor: UserInfoRepositoryInteractor;
@@ -16,24 +19,31 @@ export class AddUserInfoHandler extends BaseHandler {
   public async handle(request: DuffleRequest): Promise<DuffleResponse> {
     const body = request.body as Map<string, any> | undefined;
 
-    const firstName = body?.get('firstName');
-    const lastName = body?.get('lastName');
-    const docId = body?.get('id');
-    const metadata = body?.get('metadata');
+    if (!body) {
+      throw new Error('cannot add user info, request body is undefined');
+    }
+
+    const { id, data, metadata } =
+      convertMapToObject<
+        ObjectWithIdWrapperWithMetadata<UserInfo, string, any>
+      >(body);
+
+    console.log([id, data, metadata]);
 
     try {
-      const id = await this.interactor.add({
-        id: docId,
-        data: {
-          firstName: firstName,
-          lastName: lastName,
-        },
+      const resId = await this.interactor.add({
+        id: id,
+        data: data,
         metadata: metadata,
       });
 
+      if (!id) {
+        throw new Error(`Could not add ${id}`);
+      }
+
       const res: DuffleResponse = {
         status: 'OK',
-        body: id,
+        body: resId,
       };
 
       return Promise.resolve(res);

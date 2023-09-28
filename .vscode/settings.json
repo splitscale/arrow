@@ -1,7 +1,11 @@
 {
   "cSpell.words": [
     "MMKV",
+    "Pressable",
     "Registrator",
+    "Signin",
     "sublx"
-  ]
+  ],
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

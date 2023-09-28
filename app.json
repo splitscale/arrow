@@ -2,7 +2,7 @@
   "expo": {
     "name": "sublx",
     "slug": "sublx",
-    "version": "1.0.0",
+    "version": "1.0.5",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -20,11 +20,27 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": ["android.permission.RECORD_AUDIO"],
+      "package": "com.splitscale.sublx",
+      "versionCode": 6
     },
     "web": {
       "bundler": "metro",
       "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "ee71d86e-966b-40ac-ba4a-c27cbfcc4e78"
+      }
     }
   }
 }
