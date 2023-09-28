@@ -9,6 +9,7 @@ import {
   TextComponent,
   Text,
 } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -37,6 +38,8 @@ export default function ItemWithCTA() {
 
   // Initialize scrollX as an Animated.ValueS
   const scrollX = new Animated.Value(0);
+
+  const disableCTA = true;
 
   return (
     <View className="bg-white dark:bg-black">
@@ -111,101 +114,108 @@ export default function ItemWithCTA() {
         {/* other information */}
         <View className="space-y-3 mx-3 mt-2">
           <View className="flex flex-col space-y-2">
-            <Text className="text-3xl font-semibold color-white">
-              {'Big Room in CPU'}
-            </Text>
+            <Text className="text-3xl font-semibold">{'Big Room in CPU'}</Text>
 
             <View className="flex flex-col px-3 py-1 border-[1px] border-solid border-slate-700 rounded-md">
               <View className="flex flex-row justify-between py-1 space-x-2">
-                <Text className="text-sm color-white">
+                <Text className="text-sm ">
                   {'lopez jaena street, jaro, iloilo'}
                 </Text>
-                <Text className="text-sm color-white">{'>'}</Text>
+                <Text className="text-sm ">{'>'}</Text>
               </View>
             </View>
           </View>
 
           {/* property info with icons */}
           <View>
-            <Text className="text-lg font-medium color-white">Features</Text>
+            <Text className="text-lg font-medium ">Features</Text>
 
             <View className="flex flex-col px-3 py-2 border-[1px] border-solid border-slate-700 rounded-md">
               <View className="flex flex-row py-1 space-x-2">
-                <Text className="text-sm color-white">✅</Text>
-                <Text className="text-sm color-white">No curfew</Text>
+                <Text className="text-sm ">✅</Text>
+                <Text className="text-sm ">No curfew</Text>
               </View>
               <View className="flex flex-row py-1 space-x-2">
-                <Text className="text-sm color-white">✅</Text>
-                <Text className="text-sm color-white">Free Wifi</Text>
+                <Text className="text-sm ">✅</Text>
+                <Text className="text-sm ">Free Wifi</Text>
               </View>
               <View className="flex flex-row py-1 space-x-2">
-                <Text className="text-sm color-white">✅</Text>
-                <Text className="text-sm color-white">Visitors Allowed</Text>
+                <Text className="text-sm ">✅</Text>
+                <Text className="text-sm ">Visitors Allowed</Text>
               </View>
             </View>
           </View>
 
           {/* inclusions */}
           <View>
-            <Text className="text-lg font-medium color-white">Inclusions</Text>
+            <Text className="text-lg font-medium ">Inclusions</Text>
 
             <View className="flex flex-col px-3 py-2 border-[1px] border-solid border-slate-700 rounded-md">
               <View className="flex flex-row py-1 space-x-2">
-                <Text className="text-sm color-white">-</Text>
-                <Text className="text-sm color-white">
-                  Bed with foam & pillows
-                </Text>
+                <Text className="text-sm ">-</Text>
+                <Text className="text-sm ">Bed with foam & pillows</Text>
               </View>
               <View className="flex flex-row py-1 space-x-2">
-                <Text className="text-sm color-white">-</Text>
-                <Text className="text-sm color-white">Eating utensils</Text>
+                <Text className="text-sm ">-</Text>
+                <Text className="text-sm ">Eating utensils</Text>
               </View>
               <View className="flex flex-row py-1 space-x-2">
-                <Text className="text-sm color-white">-</Text>
-                <Text className="text-sm color-white">Fan room</Text>
+                <Text className="text-sm ">-</Text>
+                <Text className="text-sm ">Fan room</Text>
               </View>
             </View>
           </View>
 
           {/* More Info */}
           <View>
-            <Text className="text-lg font-medium color-white">House Rules</Text>
+            <Text className="text-lg font-medium ">House Rules</Text>
 
             <View className="flex flex-col px-3 py-2 border-[1px] border-solid border-slate-700 rounded-md">
-              <Text className="text-sm color-white">
-                Bawal maarte wala tubig kung aga
-              </Text>
+              <Text className="text-sm ">Bawal maarte wala tubig kung aga</Text>
             </View>
           </View>
 
           {/* pricing info */}
           <View>
-            <Text className="text-lg font-medium color-white">Price</Text>
+            <Text className="text-lg font-medium ">Price</Text>
 
             <View className="flex flex-col px-3 py-2 border-[1px] border-solid border-slate-700 rounded-md">
               <View className="flex flex-row justify-between py-1">
-                <Text className="text-sm color-white">Space</Text>
-                <Text className="text-sm color-white font-bold">P5,000</Text>
+                <Text className="text-sm">Space</Text>
+                <Text className="text-sm font-bold">P5,000</Text>
               </View>
               <View className="flex flex-row justify-between py-1">
-                <Text className="text-sm color-white">Electricity</Text>
-                <Text className="text-sm color-white font-bold">
-                  P15.50/kwh
-                </Text>
+                <Text className="text-sm">Electricity</Text>
+                <Text className="text-sm font-bold">P15.50/kwh</Text>
               </View>
               <View className="flex flex-row justify-between py-1">
-                <Text className="text-sm color-white">Wifi</Text>
-                <Text className="text-sm color-white font-bold">P300</Text>
+                <Text className="text-sm ">Wifi</Text>
+                <Text className="text-sm  font-bold">P300</Text>
               </View>
             </View>
           </View>
 
-          {/* CTA Call To Action button */}
-          <View className="flex flex-row justify-center mb-3 bg-[#00ff00] rounded-full">
-            <Text className="text-md my-3 color-black font-semibold text-xl">
-              Call Now
-            </Text>
-          </View>
+          {/* CTA */}
+          <TouchableOpacity
+            disabled={disableCTA}
+            onPress={() => {
+              console.log('Call now is pressed');
+            }}
+          >
+            <View
+              className={`flex flex-row justify-center mb-3 rounded-full ${
+                disableCTA ? 'bg-gray-300' : 'bg-[#00ff00]'
+              }`}
+            >
+              <Text
+                className={`text-md my-3 font-semibold text-xl ${
+                  disableCTA ? 'text-gray-600' : 'color-black'
+                }`}
+              >
+                {disableCTA ? 'Occupied' : 'Call Now'}
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
