@@ -9,6 +9,7 @@ import { saveLogsToDb } from '../../utils/saveLogsToDb';
 import { useState } from 'react';
 import { getAllLogsFromDb } from '../../utils/getAllLogsFromDb';
 import { deleteLogFromDb } from '../../utils/deleteLogFromDb';
+import Avatar from '../../icons/avatar';
 
 export default function TabOneScreen() {
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
@@ -22,7 +23,9 @@ export default function TabOneScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
+      <Avatar />
+
+      {/* <Text style={styles.title}>Tab One</Text>
       <Button
         title="Test"
         onPress={async () => {
@@ -67,7 +70,7 @@ export default function TabOneScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+      <EditScreenInfo path="app/(tabs)/index.tsx" /> */}
     </View>
   );
 }
