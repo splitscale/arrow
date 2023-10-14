@@ -8,6 +8,7 @@ export default function TabTwoScreen() {
     <View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className='p-4 flex-1'>
+          
           <Homecards
             aptName='Small sized apartment'
             location='Near CPU, Jaro, Iloilo City'
